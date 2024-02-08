@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+message stringReply {
+  string reply = 1;
+}
+
+message SellerInfo {
+  string seller_address = 1;
+  string seller_uuid = 2;
+}
+
+message Item {
+  int32 id = 1;
+  string name = 2;
+  enum Category {
+    ELECTRONICS = 0;
+    FASHION = 1;
+    OTHERS = 2;
+  }
+  Category category = 3;
+  int32 quantity = 4;
+  string description = 5;
+  string seller_uuid = 6;
+  string seller_address = 7;
+  float price = 8;
+}
+
+message ItemUpdate {
+  int32 id = 1;
+  float price = 2;
+  int32 quantity = 3;
+  string seller_uuid = 4;
+  string seller_address = 5;
+}
+
+message BuyRequest {
+  int32 id = 1;
+  int32 quantity = 2;
+  string buyer_address = 3;
+}
+
+message WishListRequest {
+  int32 id = 1;
+  string buyer_address = 2;
+}
+
+message RateRequest {
+  int32 id = 1;
+  string buyer_address = 2;
+  int32 rating = 3;
+}
+
+service MarketPlace {
+  rpc RegisterSeller(SellerInfo) returns (stringReply) {}
+
+  rpc SellItem(Item) returns (stringReply) {}
+  
+  rpc UpdateItem(ItemUpdate) returns (stringReply) {}
+  
+  rpc DeleteItem(Item) returns (stringReply) {}
+  
+  rpc DisplaySellerItems(SellerInfo) returns (stream Item) {}
+  
+  rpc SearchItem(Item) returns (stream Item) {} 
+  
+  rpc BuyItem(BuyRequest) returns (stringReply) {} 
+  
+  rpc AddToWishList(WishListRequest) returns (stringReply) {}
+  
+  rpc RateItem(RateRequest) returns (stringReply) {}
+}
