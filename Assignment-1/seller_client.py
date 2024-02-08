@@ -7,14 +7,15 @@ import uuid
 def get_ip_port():
     hostname = socket.gethostname()
     ip_address = socket.gethostbyname(hostname)
-    port = 50051  
+    # ip_address = "192.1.1.45"
+    port = 50051  #use port directly from the server
     return f"{ip_address}:{port}"
 
 def run():
     channel = grpc.insecure_channel('localhost:50051')
     stub = shopping_pb2_grpc.MarketPlaceStub(channel)
 
-    global_seller_uuid = str(uuid.uuid4())
+    global_seller_uuid = str(uuid.uuid1())
     global_seller_addr = get_ip_port()
 
     register_message = shopping_pb2.SellerInfo(
@@ -88,10 +89,29 @@ def run():
 
         elif option == '3':
             print("Option 3: Delete Item")
-            # Add your delete item logic here
+            id = int(input("Enter item id: "))
+            seller_uuid=input("Enter seller uuid: ")
+            seller_address=input("Enter seller address[ip:port]: ")
+
+            delete_message = shopping_pb2.ItemDelete(
+            id=id,
+            seller_uuid=seller_uuid,
+            seller_address=seller_address,
+            )
+            print("Request sent to delete item from the market place...")
+            response = stub.DeleteItem(delete_message)
+            print(response)
+
         elif option == '4':
             print("Option 4: Display Items")
-            # Add your display items logic here
+            display_message = shopping_pb2.SellerInfo(
+            seller_address=global_seller_addr,
+            seller_uuid=global_seller_uuid,
+            )
+            print("Request sent to display items from the market place...")
+            response = stub.DisplaySellerItems(display_message)
+            print(response.items)
+
         elif option == '5':
             print("Logging out...")
             break

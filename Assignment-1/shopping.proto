@@ -33,6 +33,16 @@ message ItemUpdate {
   string seller_address = 5;
 }
 
+message ItemDelete {
+  int32 id = 1;
+  string seller_uuid = 2;
+  string seller_address = 3;
+}
+
+message ItemList {
+  repeated Item items = 1;
+}
+
 message BuyRequest {
   int32 id = 1;
   int32 quantity = 2;
@@ -57,9 +67,9 @@ service MarketPlace {
   
   rpc UpdateItem(ItemUpdate) returns (stringReply) {}
   
-  rpc DeleteItem(Item) returns (stringReply) {}
+  rpc DeleteItem(ItemDelete) returns (stringReply) {}
   
-  rpc DisplaySellerItems(SellerInfo) returns (stream Item) {}
+  rpc DisplaySellerItems(SellerInfo) returns (ItemList) {}
   
   rpc SearchItem(Item) returns (stream Item) {} 
   

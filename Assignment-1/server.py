@@ -21,7 +21,7 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
     
     def RegisterSeller(self, request, context):
         print(f"Seller join request from {request.seller_address}[ip:port], uuid = {request.seller_uuid}")
-        if any(seller.uuid == request.uuid for seller in self.seller_list):
+        if any(seller.seller_uuid == request.seller_uuid for seller in self.seller_list):
             print("Seller UUID already exists. Register Seller failed.")
             return shopping_pb2.stringReply(reply="FAIL")
         else:
@@ -30,6 +30,7 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
             return shopping_pb2.stringReply(reply="SUCCESS")
 
     def SellItem(self, request, context):
+        #buyer ratings
         print(f"Sell Item request from {request.seller_address}[ip:port], uuid = {request.seller_uuid}")
         request.id=self.item_id
         self.item_id+=1
@@ -51,13 +52,40 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         print(self.item_list[result])
         #notify buyers code
         return shopping_pb2.stringReply(reply="SUCCESS")
+    
+    def DeleteItem(self, request, context):
+        print(f"Delete Item: {request.id} request from {request.seller_address}[ip:port], uuid = {request.seller_uuid}")
+        result = binary_search(self.item_list, request.id)
+        if(result != -1 and self.item_list[result].seller_address == request.seller_address and self.item_list[result].seller_uuid == request.seller_uuid):
+            deleted = self.item_list.pop(result)
+            print("Item deleted from the market Place :")
+            print(deleted)
+        else:
+            print("Authentication failed.")
+            return shopping_pb2.stringReply(reply="FAIL")
+        #Delete product from wishlist of user as well
+        return shopping_pb2.stringReply(reply="SUCCESS")
+    
+    def DisplaySellerItems(self, request, context):
+        print(f"Display Items request from {request.seller_address}[ip:port], uuid = {request.seller_uuid}")
+        item_list_message = shopping_pb2.ItemList()
+        for item in self.item_list:
+            if item.seller_uuid == request.seller_uuid:
+                item_list_message.items.append(item)
+        return item_list_message
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     shopping_pb2_grpc.add_MarketPlaceServicer_to_server(MarketPlaceServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
-    server.wait_for_termination()
+    print("Server started. Listening on port 50051")
+
+    try:
+        server.wait_for_termination()
+    except KeyboardInterrupt:
+        print("Received Ctrl+C. Shutting down the server gracefully...")
+        server.stop(None)
 
 if __name__ == '__main__':
     serve()

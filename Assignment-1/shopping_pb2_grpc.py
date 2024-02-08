@@ -31,13 +31,13 @@ class MarketPlaceStub(object):
                 )
         self.DeleteItem = channel.unary_unary(
                 '/MarketPlace/DeleteItem',
-                request_serializer=shopping__pb2.Item.SerializeToString,
+                request_serializer=shopping__pb2.ItemDelete.SerializeToString,
                 response_deserializer=shopping__pb2.stringReply.FromString,
                 )
-        self.DisplaySellerItems = channel.unary_stream(
+        self.DisplaySellerItems = channel.unary_unary(
                 '/MarketPlace/DisplaySellerItems',
                 request_serializer=shopping__pb2.SellerInfo.SerializeToString,
-                response_deserializer=shopping__pb2.Item.FromString,
+                response_deserializer=shopping__pb2.ItemList.FromString,
                 )
         self.SearchItem = channel.unary_stream(
                 '/MarketPlace/SearchItem',
@@ -138,13 +138,13 @@ def add_MarketPlaceServicer_to_server(servicer, server):
             ),
             'DeleteItem': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteItem,
-                    request_deserializer=shopping__pb2.Item.FromString,
+                    request_deserializer=shopping__pb2.ItemDelete.FromString,
                     response_serializer=shopping__pb2.stringReply.SerializeToString,
             ),
-            'DisplaySellerItems': grpc.unary_stream_rpc_method_handler(
+            'DisplaySellerItems': grpc.unary_unary_rpc_method_handler(
                     servicer.DisplaySellerItems,
                     request_deserializer=shopping__pb2.SellerInfo.FromString,
-                    response_serializer=shopping__pb2.Item.SerializeToString,
+                    response_serializer=shopping__pb2.ItemList.SerializeToString,
             ),
             'SearchItem': grpc.unary_stream_rpc_method_handler(
                     servicer.SearchItem,
@@ -239,7 +239,7 @@ class MarketPlace(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/MarketPlace/DeleteItem',
-            shopping__pb2.Item.SerializeToString,
+            shopping__pb2.ItemDelete.SerializeToString,
             shopping__pb2.stringReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -255,9 +255,9 @@ class MarketPlace(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/MarketPlace/DisplaySellerItems',
+        return grpc.experimental.unary_unary(request, target, '/MarketPlace/DisplaySellerItems',
             shopping__pb2.SellerInfo.SerializeToString,
-            shopping__pb2.Item.FromString,
+            shopping__pb2.ItemList.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
