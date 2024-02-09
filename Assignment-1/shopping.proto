@@ -9,6 +9,11 @@ message SellerInfo {
   string seller_uuid = 2;
 }
 
+message BuyerInfo {
+  string buyer_address = 1;
+  string buyer_uuid = 2;
+}
+
 message Item {
   int32 id = 1;
   string name = 2;
@@ -23,6 +28,8 @@ message Item {
   string seller_uuid = 6;
   string seller_address = 7;
   float price = 8;
+  float rating = 9;
+  int32 total_ratings = 10;
 }
 
 message ItemUpdate {
@@ -43,6 +50,19 @@ message ItemList {
   repeated Item items = 1;
 }
 
+message SearchRequest {
+  string name = 1;
+  enum Category {
+    ELECTRONICS = 0;
+    FASHION = 1;
+    OTHERS = 2;
+    ANY = 3;
+  }
+  Category category = 2;
+  string buyer_uuid = 3;
+  string buyer_address = 4;
+}
+
 message BuyRequest {
   int32 id = 1;
   int32 quantity = 2;
@@ -52,6 +72,7 @@ message BuyRequest {
 message WishListRequest {
   int32 id = 1;
   string buyer_address = 2;
+  string buyer_uuid = 3;
 }
 
 message RateRequest {
@@ -61,6 +82,8 @@ message RateRequest {
 }
 
 service MarketPlace {
+  rpc RegisterBuyer(BuyerInfo) returns (stringReply) {}
+
   rpc RegisterSeller(SellerInfo) returns (stringReply) {}
 
   rpc SellItem(Item) returns (stringReply) {}
@@ -71,7 +94,7 @@ service MarketPlace {
   
   rpc DisplaySellerItems(SellerInfo) returns (ItemList) {}
   
-  rpc SearchItem(Item) returns (stream Item) {} 
+  rpc SearchItem(SearchRequest) returns (ItemList) {} 
   
   rpc BuyItem(BuyRequest) returns (stringReply) {} 
   

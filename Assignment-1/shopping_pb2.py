@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0eshopping.proto\"\x1c\n\x0bstringReply\x12\r\n\x05reply\x18\x01 \x01(\t\"9\n\nSellerInfo\x12\x16\n\x0eseller_address\x18\x01 \x01(\t\x12\x13\n\x0bseller_uuid\x18\x02 \x01(\t\"\xdb\x01\n\x04Item\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12 \n\x08\x63\x61tegory\x18\x03 \x01(\x0e\x32\x0e.Item.Category\x12\x10\n\x08quantity\x18\x04 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x13\n\x0bseller_uuid\x18\x06 \x01(\t\x12\x16\n\x0eseller_address\x18\x07 \x01(\t\x12\r\n\x05price\x18\x08 \x01(\x02\"4\n\x08\x43\x61tegory\x12\x0f\n\x0b\x45LECTRONICS\x10\x00\x12\x0b\n\x07\x46\x41SHION\x10\x01\x12\n\n\x06OTHERS\x10\x02\"f\n\nItemUpdate\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05price\x18\x02 \x01(\x02\x12\x10\n\x08quantity\x18\x03 \x01(\x05\x12\x13\n\x0bseller_uuid\x18\x04 \x01(\t\x12\x16\n\x0eseller_address\x18\x05 \x01(\t\"E\n\nItemDelete\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x13\n\x0bseller_uuid\x18\x02 \x01(\t\x12\x16\n\x0eseller_address\x18\x03 \x01(\t\" \n\x08ItemList\x12\x14\n\x05items\x18\x01 \x03(\x0b\x32\x05.Item\"A\n\nBuyRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08quantity\x18\x02 \x01(\x05\x12\x15\n\rbuyer_address\x18\x03 \x01(\t\"4\n\x0fWishListRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x15\n\rbuyer_address\x18\x02 \x01(\t\"@\n\x0bRateRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x15\n\rbuyer_address\x18\x02 \x01(\t\x12\x0e\n\x06rating\x18\x03 \x01(\x05\x32\x8a\x03\n\x0bMarketPlace\x12-\n\x0eRegisterSeller\x12\x0b.SellerInfo\x1a\x0c.stringReply\"\x00\x12!\n\x08SellItem\x12\x05.Item\x1a\x0c.stringReply\"\x00\x12)\n\nUpdateItem\x12\x0b.ItemUpdate\x1a\x0c.stringReply\"\x00\x12)\n\nDeleteItem\x12\x0b.ItemDelete\x1a\x0c.stringReply\"\x00\x12.\n\x12\x44isplaySellerItems\x12\x0b.SellerInfo\x1a\t.ItemList\"\x00\x12\x1e\n\nSearchItem\x12\x05.Item\x1a\x05.Item\"\x00\x30\x01\x12&\n\x07\x42uyItem\x12\x0b.BuyRequest\x1a\x0c.stringReply\"\x00\x12\x31\n\rAddToWishList\x12\x10.WishListRequest\x1a\x0c.stringReply\"\x00\x12(\n\x08RateItem\x12\x0c.RateRequest\x1a\x0c.stringReply\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0eshopping.proto\"\x1c\n\x0bstringReply\x12\r\n\x05reply\x18\x01 \x01(\t\"9\n\nSellerInfo\x12\x16\n\x0eseller_address\x18\x01 \x01(\t\x12\x13\n\x0bseller_uuid\x18\x02 \x01(\t\"6\n\tBuyerInfo\x12\x15\n\rbuyer_address\x18\x01 \x01(\t\x12\x12\n\nbuyer_uuid\x18\x02 \x01(\t\"\x82\x02\n\x04Item\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12 \n\x08\x63\x61tegory\x18\x03 \x01(\x0e\x32\x0e.Item.Category\x12\x10\n\x08quantity\x18\x04 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x13\n\x0bseller_uuid\x18\x06 \x01(\t\x12\x16\n\x0eseller_address\x18\x07 \x01(\t\x12\r\n\x05price\x18\x08 \x01(\x02\x12\x0e\n\x06rating\x18\t \x01(\x02\x12\x15\n\rtotal_ratings\x18\n \x01(\x05\"4\n\x08\x43\x61tegory\x12\x0f\n\x0b\x45LECTRONICS\x10\x00\x12\x0b\n\x07\x46\x41SHION\x10\x01\x12\n\n\x06OTHERS\x10\x02\"f\n\nItemUpdate\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05price\x18\x02 \x01(\x02\x12\x10\n\x08quantity\x18\x03 \x01(\x05\x12\x13\n\x0bseller_uuid\x18\x04 \x01(\t\x12\x16\n\x0eseller_address\x18\x05 \x01(\t\"E\n\nItemDelete\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x13\n\x0bseller_uuid\x18\x02 \x01(\t\x12\x16\n\x0eseller_address\x18\x03 \x01(\t\" \n\x08ItemList\x12\x14\n\x05items\x18\x01 \x03(\x0b\x32\x05.Item\"\xb2\x01\n\rSearchRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12)\n\x08\x63\x61tegory\x18\x02 \x01(\x0e\x32\x17.SearchRequest.Category\x12\x12\n\nbuyer_uuid\x18\x03 \x01(\t\x12\x15\n\rbuyer_address\x18\x04 \x01(\t\"=\n\x08\x43\x61tegory\x12\x0f\n\x0b\x45LECTRONICS\x10\x00\x12\x0b\n\x07\x46\x41SHION\x10\x01\x12\n\n\x06OTHERS\x10\x02\x12\x07\n\x03\x41NY\x10\x03\"A\n\nBuyRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08quantity\x18\x02 \x01(\x05\x12\x15\n\rbuyer_address\x18\x03 \x01(\t\"H\n\x0fWishListRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x15\n\rbuyer_address\x18\x02 \x01(\t\x12\x12\n\nbuyer_uuid\x18\x03 \x01(\t\"@\n\x0bRateRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x15\n\rbuyer_address\x18\x02 \x01(\t\x12\x0e\n\x06rating\x18\x03 \x01(\x05\x32\xc2\x03\n\x0bMarketPlace\x12+\n\rRegisterBuyer\x12\n.BuyerInfo\x1a\x0c.stringReply\"\x00\x12-\n\x0eRegisterSeller\x12\x0b.SellerInfo\x1a\x0c.stringReply\"\x00\x12!\n\x08SellItem\x12\x05.Item\x1a\x0c.stringReply\"\x00\x12)\n\nUpdateItem\x12\x0b.ItemUpdate\x1a\x0c.stringReply\"\x00\x12)\n\nDeleteItem\x12\x0b.ItemDelete\x1a\x0c.stringReply\"\x00\x12.\n\x12\x44isplaySellerItems\x12\x0b.SellerInfo\x1a\t.ItemList\"\x00\x12)\n\nSearchItem\x12\x0e.SearchRequest\x1a\t.ItemList\"\x00\x12&\n\x07\x42uyItem\x12\x0b.BuyRequest\x1a\x0c.stringReply\"\x00\x12\x31\n\rAddToWishList\x12\x10.WishListRequest\x1a\x0c.stringReply\"\x00\x12(\n\x08RateItem\x12\x0c.RateRequest\x1a\x0c.stringReply\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,22 +25,28 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_STRINGREPLY']._serialized_end=46
   _globals['_SELLERINFO']._serialized_start=48
   _globals['_SELLERINFO']._serialized_end=105
-  _globals['_ITEM']._serialized_start=108
-  _globals['_ITEM']._serialized_end=327
-  _globals['_ITEM_CATEGORY']._serialized_start=275
-  _globals['_ITEM_CATEGORY']._serialized_end=327
-  _globals['_ITEMUPDATE']._serialized_start=329
-  _globals['_ITEMUPDATE']._serialized_end=431
-  _globals['_ITEMDELETE']._serialized_start=433
-  _globals['_ITEMDELETE']._serialized_end=502
-  _globals['_ITEMLIST']._serialized_start=504
-  _globals['_ITEMLIST']._serialized_end=536
-  _globals['_BUYREQUEST']._serialized_start=538
-  _globals['_BUYREQUEST']._serialized_end=603
-  _globals['_WISHLISTREQUEST']._serialized_start=605
-  _globals['_WISHLISTREQUEST']._serialized_end=657
-  _globals['_RATEREQUEST']._serialized_start=659
-  _globals['_RATEREQUEST']._serialized_end=723
-  _globals['_MARKETPLACE']._serialized_start=726
-  _globals['_MARKETPLACE']._serialized_end=1120
+  _globals['_BUYERINFO']._serialized_start=107
+  _globals['_BUYERINFO']._serialized_end=161
+  _globals['_ITEM']._serialized_start=164
+  _globals['_ITEM']._serialized_end=422
+  _globals['_ITEM_CATEGORY']._serialized_start=370
+  _globals['_ITEM_CATEGORY']._serialized_end=422
+  _globals['_ITEMUPDATE']._serialized_start=424
+  _globals['_ITEMUPDATE']._serialized_end=526
+  _globals['_ITEMDELETE']._serialized_start=528
+  _globals['_ITEMDELETE']._serialized_end=597
+  _globals['_ITEMLIST']._serialized_start=599
+  _globals['_ITEMLIST']._serialized_end=631
+  _globals['_SEARCHREQUEST']._serialized_start=634
+  _globals['_SEARCHREQUEST']._serialized_end=812
+  _globals['_SEARCHREQUEST_CATEGORY']._serialized_start=751
+  _globals['_SEARCHREQUEST_CATEGORY']._serialized_end=812
+  _globals['_BUYREQUEST']._serialized_start=814
+  _globals['_BUYREQUEST']._serialized_end=879
+  _globals['_WISHLISTREQUEST']._serialized_start=881
+  _globals['_WISHLISTREQUEST']._serialized_end=953
+  _globals['_RATEREQUEST']._serialized_start=955
+  _globals['_RATEREQUEST']._serialized_end=1019
+  _globals['_MARKETPLACE']._serialized_start=1022
+  _globals['_MARKETPLACE']._serialized_end=1472
 # @@protoc_insertion_point(module_scope)

@@ -5,10 +5,8 @@ import socket
 import uuid
 
 def get_ip_port():
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    # ip_address = "192.1.1.45"
-    port = 50051  #use port directly from the server
+    ip_address = "127.0.0.1"
+    port = 50051 
     return f"{ip_address}:{port}"
 
 def run():
@@ -61,7 +59,9 @@ def run():
             description=description,
             seller_uuid=global_seller_uuid,
             seller_address=global_seller_addr,
-            price=price
+            price=price,
+            rating=0,
+            total_ratings=0
             )
             print("Request sent to list item on the market place...")
             response = stub.SellItem(item_message)

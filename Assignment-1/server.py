@@ -16,17 +16,33 @@ def binary_search(requests, target_id):
 class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
     def __init__(self):
         self.seller_list = []
+        self.buyer_list = []
         self.item_list = []
+        self.wish_list = {}
         self.item_id = 1
     
     def RegisterSeller(self, request, context):
         print(f"Seller join request from {request.seller_address}[ip:port], uuid = {request.seller_uuid}")
         if any(seller.seller_uuid == request.seller_uuid for seller in self.seller_list):
             print("Seller UUID already exists. Register Seller failed.")
+            print()
             return shopping_pb2.stringReply(reply="FAIL")
         else:
             self.seller_list.append(request)
             print("Seller UUID added to the list.")
+            print()
+            return shopping_pb2.stringReply(reply="SUCCESS")
+        
+    def RegisterBuyer(self, request, context):
+        print(f"Buyer join request from {request.buyer_address}[ip:port], uuid = {request.buyer_uuid}")
+        if any(buyer.buyer_uuid == request.buyer_uuid for buyer in self.buyer_list):
+            print("Buyer UUID already exists. Register Buyer failed.")
+            print()
+            return shopping_pb2.stringReply(reply="FAIL")
+        else:
+            self.buyer_list.append(request)
+            print("Buyer UUID added to the list.")
+            print()
             return shopping_pb2.stringReply(reply="SUCCESS")
 
     def SellItem(self, request, context):
@@ -37,6 +53,7 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         self.item_list.append(request)
         print("Item added to the market Place :")
         print(self.item_list[-1])
+        
         return shopping_pb2.stringReply(reply="SUCCESS")
     
     def UpdateItem(self, request, context):
@@ -51,6 +68,7 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         print("Item updated to the market Place :")
         print(self.item_list[result])
         #notify buyers code
+        print()
         return shopping_pb2.stringReply(reply="SUCCESS")
     
     def DeleteItem(self, request, context):
@@ -62,8 +80,10 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
             print(deleted)
         else:
             print("Authentication failed.")
+            print()
             return shopping_pb2.stringReply(reply="FAIL")
         #Delete product from wishlist of user as well
+        print()
         return shopping_pb2.stringReply(reply="SUCCESS")
     
     def DisplaySellerItems(self, request, context):
@@ -72,7 +92,69 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         for item in self.item_list:
             if item.seller_uuid == request.seller_uuid:
                 item_list_message.items.append(item)
+        print()
         return item_list_message
+    
+    def SearchItem(self, request, context):
+        print(f"Search Items request from {request.buyer_address}[ip:port], uuid = {request.buyer_uuid}")
+        item_list_message = shopping_pb2.ItemList()
+        for item in self.item_list:
+            if request.name == "" or request.name == item.name:
+                if request.category == shopping_pb2.SearchRequest.ANY or request.category == item.category:
+                    item_list_message.items.append(item)
+        print()
+        return item_list_message
+    
+    def BuyItem(self, request, context):
+        print(f"Buy request {request.quantity} of item {request.id}, from {request.buyer_address}")
+        result = binary_search(self.item_list, request.id)
+        if(result != -1):
+            if(self.item_list[result].quantity >= 1):
+                self.item_list[result].quantity-=1
+                #notify seller
+            else:
+                print("Out of Stock.")
+                return shopping_pb2.stringReply(reply="FAIL")
+        else:
+            print("Invalid Product Id.")
+            return shopping_pb2.stringReply(reply="FAIL")
+        print("Product purchased.")
+        print(self.item_list[result])
+        print()
+        return shopping_pb2.stringReply(reply="SUCCESS")
+    
+    def AddToWishList(self, request, context):
+        print(f"Wishlist request of item {request.id}, from {request.buyer_address}")
+        result = binary_search(self.item_list, request.id)
+        if(result != -1):
+            if(request.id in self.wish_list):
+                self.wish_list[request.id].add(request.buyer_uuid)
+            else:
+                self.wish_list[request.id] = {request.buyer_uuid}
+        else:
+            print("Invalid Product Id.")
+            print()
+            return shopping_pb2.stringReply(reply="FAIL")
+        
+        print("Added to wishlist.")
+        print(self.wish_list)
+        print()
+        return shopping_pb2.stringReply(reply="SUCCESS")
+    
+    def RateItem(self, request, context):
+        print(f"{request.buyer_address} rated item {request.id} with {request.rating} stars.")
+        result = binary_search(self.item_list, request.id)
+        if(result != -1):
+            self.item_list[result].rating = (self.item_list[result].rating * self.item_list[result].total_ratings + request.rating) / (self.item_list[result].total_ratings + 1)
+            self.item_list[result].total_ratings += 1
+        else:
+            print("Invalid Product Id.")
+            return shopping_pb2.stringReply(reply="FAIL")
+        print("Rated Item.")
+        print(self.item_list[result])
+        print()
+        return shopping_pb2.stringReply(reply="SUCCESS")
+    
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

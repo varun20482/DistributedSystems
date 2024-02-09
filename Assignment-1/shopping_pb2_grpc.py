@@ -14,6 +14,11 @@ class MarketPlaceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.RegisterBuyer = channel.unary_unary(
+                '/MarketPlace/RegisterBuyer',
+                request_serializer=shopping__pb2.BuyerInfo.SerializeToString,
+                response_deserializer=shopping__pb2.stringReply.FromString,
+                )
         self.RegisterSeller = channel.unary_unary(
                 '/MarketPlace/RegisterSeller',
                 request_serializer=shopping__pb2.SellerInfo.SerializeToString,
@@ -39,10 +44,10 @@ class MarketPlaceStub(object):
                 request_serializer=shopping__pb2.SellerInfo.SerializeToString,
                 response_deserializer=shopping__pb2.ItemList.FromString,
                 )
-        self.SearchItem = channel.unary_stream(
+        self.SearchItem = channel.unary_unary(
                 '/MarketPlace/SearchItem',
-                request_serializer=shopping__pb2.Item.SerializeToString,
-                response_deserializer=shopping__pb2.Item.FromString,
+                request_serializer=shopping__pb2.SearchRequest.SerializeToString,
+                response_deserializer=shopping__pb2.ItemList.FromString,
                 )
         self.BuyItem = channel.unary_unary(
                 '/MarketPlace/BuyItem',
@@ -63,6 +68,12 @@ class MarketPlaceStub(object):
 
 class MarketPlaceServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def RegisterBuyer(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def RegisterSeller(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -121,6 +132,11 @@ class MarketPlaceServicer(object):
 
 def add_MarketPlaceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'RegisterBuyer': grpc.unary_unary_rpc_method_handler(
+                    servicer.RegisterBuyer,
+                    request_deserializer=shopping__pb2.BuyerInfo.FromString,
+                    response_serializer=shopping__pb2.stringReply.SerializeToString,
+            ),
             'RegisterSeller': grpc.unary_unary_rpc_method_handler(
                     servicer.RegisterSeller,
                     request_deserializer=shopping__pb2.SellerInfo.FromString,
@@ -146,10 +162,10 @@ def add_MarketPlaceServicer_to_server(servicer, server):
                     request_deserializer=shopping__pb2.SellerInfo.FromString,
                     response_serializer=shopping__pb2.ItemList.SerializeToString,
             ),
-            'SearchItem': grpc.unary_stream_rpc_method_handler(
+            'SearchItem': grpc.unary_unary_rpc_method_handler(
                     servicer.SearchItem,
-                    request_deserializer=shopping__pb2.Item.FromString,
-                    response_serializer=shopping__pb2.Item.SerializeToString,
+                    request_deserializer=shopping__pb2.SearchRequest.FromString,
+                    response_serializer=shopping__pb2.ItemList.SerializeToString,
             ),
             'BuyItem': grpc.unary_unary_rpc_method_handler(
                     servicer.BuyItem,
@@ -175,6 +191,23 @@ def add_MarketPlaceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class MarketPlace(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def RegisterBuyer(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/MarketPlace/RegisterBuyer',
+            shopping__pb2.BuyerInfo.SerializeToString,
+            shopping__pb2.stringReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def RegisterSeller(request,
@@ -272,9 +305,9 @@ class MarketPlace(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/MarketPlace/SearchItem',
-            shopping__pb2.Item.SerializeToString,
-            shopping__pb2.Item.FromString,
+        return grpc.experimental.unary_unary(request, target, '/MarketPlace/SearchItem',
+            shopping__pb2.SearchRequest.SerializeToString,
+            shopping__pb2.ItemList.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
