@@ -81,6 +81,14 @@ message RateRequest {
   int32 rating = 3;
 }
 
+message BuyerNotificationRequest {
+  string buyer_uuid = 1;
+}
+
+message SellerNotificationRequest {
+  string seller_uuid = 1;
+}
+
 service MarketPlace {
   rpc RegisterBuyer(BuyerInfo) returns (stringReply) {}
 
@@ -101,4 +109,8 @@ service MarketPlace {
   rpc AddToWishList(WishListRequest) returns (stringReply) {}
   
   rpc RateItem(RateRequest) returns (stringReply) {}
+
+  rpc GetBuyerNotifications(BuyerNotificationRequest) returns (stream Item) {}
+
+  rpc GetSellerNotifications(SellerNotificationRequest) returns (stream Item) {}
 }

@@ -3,6 +3,19 @@ import shopping_pb2
 import shopping_pb2_grpc
 import socket
 import uuid
+import threading
+import time
+
+on = True
+def notification_thread(stub, global_seller_uuid):
+    while on:
+        seller_notification_message = shopping_pb2.SellerNotificationRequest(
+            seller_uuid=global_seller_uuid
+        )
+        for response in stub.GetSellerNotifications(seller_notification_message):
+            print("The following item has been updated ...")
+            print(response)
+        time.sleep(1)
 
 def get_ip_port():
     ip_address = "127.0.0.1"
@@ -23,6 +36,9 @@ def run():
     response = stub.RegisterSeller(register_message)
     print("Registering Seller with uuid:", register_message.seller_uuid, "and address:", register_message.seller_address)
     print(response)
+
+    notification_thread_instance = threading.Thread(target=notification_thread, args=(stub, global_seller_uuid))
+    notification_thread_instance.start()
 
     while True:
         print("Options:")
@@ -113,7 +129,16 @@ def run():
             print(response.items)
 
         elif option == '5':
+            seller_notification_message = shopping_pb2.SellerNotificationRequest(
+                seller_uuid=global_seller_uuid
+            )
+            for response in stub.GetSellerNotifications(seller_notification_message):
+                print("The following item has been updated ...")
+                print(response)
             print("Logging out...")
+            global on
+            on = False
+            notification_thread_instance.join()
             break
         else:
             print("Invalid option. Please choose again.")

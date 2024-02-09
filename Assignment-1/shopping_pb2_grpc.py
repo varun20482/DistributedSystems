@@ -64,6 +64,16 @@ class MarketPlaceStub(object):
                 request_serializer=shopping__pb2.RateRequest.SerializeToString,
                 response_deserializer=shopping__pb2.stringReply.FromString,
                 )
+        self.GetBuyerNotifications = channel.unary_stream(
+                '/MarketPlace/GetBuyerNotifications',
+                request_serializer=shopping__pb2.BuyerNotificationRequest.SerializeToString,
+                response_deserializer=shopping__pb2.Item.FromString,
+                )
+        self.GetSellerNotifications = channel.unary_stream(
+                '/MarketPlace/GetSellerNotifications',
+                request_serializer=shopping__pb2.SellerNotificationRequest.SerializeToString,
+                response_deserializer=shopping__pb2.Item.FromString,
+                )
 
 
 class MarketPlaceServicer(object):
@@ -129,6 +139,18 @@ class MarketPlaceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetBuyerNotifications(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetSellerNotifications(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MarketPlaceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -181,6 +203,16 @@ def add_MarketPlaceServicer_to_server(servicer, server):
                     servicer.RateItem,
                     request_deserializer=shopping__pb2.RateRequest.FromString,
                     response_serializer=shopping__pb2.stringReply.SerializeToString,
+            ),
+            'GetBuyerNotifications': grpc.unary_stream_rpc_method_handler(
+                    servicer.GetBuyerNotifications,
+                    request_deserializer=shopping__pb2.BuyerNotificationRequest.FromString,
+                    response_serializer=shopping__pb2.Item.SerializeToString,
+            ),
+            'GetSellerNotifications': grpc.unary_stream_rpc_method_handler(
+                    servicer.GetSellerNotifications,
+                    request_deserializer=shopping__pb2.SellerNotificationRequest.FromString,
+                    response_serializer=shopping__pb2.Item.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -359,5 +391,39 @@ class MarketPlace(object):
         return grpc.experimental.unary_unary(request, target, '/MarketPlace/RateItem',
             shopping__pb2.RateRequest.SerializeToString,
             shopping__pb2.stringReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetBuyerNotifications(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/MarketPlace/GetBuyerNotifications',
+            shopping__pb2.BuyerNotificationRequest.SerializeToString,
+            shopping__pb2.Item.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetSellerNotifications(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/MarketPlace/GetSellerNotifications',
+            shopping__pb2.SellerNotificationRequest.SerializeToString,
+            shopping__pb2.Item.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

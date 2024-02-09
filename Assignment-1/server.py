@@ -19,6 +19,8 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         self.buyer_list = []
         self.item_list = []
         self.wish_list = {}
+        self.seller_notifications = {}
+        self.buyer_notifications = {}
         self.item_id = 1
     
     def RegisterSeller(self, request, context):
@@ -46,7 +48,6 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
             return shopping_pb2.stringReply(reply="SUCCESS")
 
     def SellItem(self, request, context):
-        #buyer ratings
         print(f"Sell Item request from {request.seller_address}[ip:port], uuid = {request.seller_uuid}")
         request.id=self.item_id
         self.item_id+=1
@@ -67,7 +68,15 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
             return shopping_pb2.stringReply(reply="FAIL")
         print("Item updated to the market Place :")
         print(self.item_list[result])
+
         #notify buyers code
+        if request.id in self.wish_list:
+            for buyer_uuid in self.wish_list[request.id]:
+                if(buyer_uuid in self.buyer_notifications):
+                    self.buyer_notifications[buyer_uuid].append[self.item_list[result]]
+                else:
+                    self.buyer_notifications[buyer_uuid] = [self.item_list[result]]
+        
         print()
         return shopping_pb2.stringReply(reply="SUCCESS")
     
@@ -82,7 +91,11 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
             print("Authentication failed.")
             print()
             return shopping_pb2.stringReply(reply="FAIL")
+        
         #Delete product from wishlist of user as well
+        if request.id in self.wish_list:
+            del self.wish_list[request.id]
+
         print()
         return shopping_pb2.stringReply(reply="SUCCESS")
     
@@ -111,7 +124,6 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         if(result != -1):
             if(self.item_list[result].quantity >= 1):
                 self.item_list[result].quantity-=1
-                #notify seller
             else:
                 print("Out of Stock.")
                 return shopping_pb2.stringReply(reply="FAIL")
@@ -121,6 +133,13 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         print("Product purchased.")
         print(self.item_list[result])
         print()
+
+        #notify seller
+        if(self.item_list[result].seller_uuid in self.seller_notifications):
+            self.seller_notifications[self.item_list[result].seller_uuid].append(self.item_list[result])
+        else:
+            self.seller_notifications[self.item_list[result].seller_uuid] = [self.item_list[result]]
+
         return shopping_pb2.stringReply(reply="SUCCESS")
     
     def AddToWishList(self, request, context):
@@ -154,6 +173,19 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         print(self.item_list[result])
         print()
         return shopping_pb2.stringReply(reply="SUCCESS")
+    
+    def GetBuyerNotifications(self, request, context):
+        if request.buyer_uuid in self.buyer_notifications:
+            for item in self.buyer_notifications[request.buyer_uuid]:
+                yield item
+            del self.buyer_notifications[request.buyer_uuid]
+    
+    def GetSellerNotifications(self, request, context):
+        if request.seller_uuid in self.seller_notifications:
+            for item in self.seller_notifications[request.seller_uuid]:
+                yield item
+            del self.seller_notifications[request.seller_uuid]
+        
     
 
 def serve():
