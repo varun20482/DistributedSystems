@@ -15,7 +15,7 @@ def notification_thread(stub, global_buyer_uuid):
         for response in stub.GetBuyerNotifications(buyer_notification_message):
             print("The following item has been updated ...")
             print(response)
-        time.sleep(1)
+        time.sleep(0.01)
 
 def get_ip_port():
     ip_address = "127.0.0.1"
@@ -66,6 +66,7 @@ def run():
                 category_enum = shopping_pb2.SearchRequest.ANY
             else:
                 print("Invalid category input")
+                continue
 
             search_message = shopping_pb2.SearchRequest(
             name=name,
@@ -106,6 +107,10 @@ def run():
             print("Option 4: Rate Item")
             id = int(input("Enter item id: "))
             rating = int(input("Enter item rating(1-5): "))
+            if not(1 <= rating <= 5):
+                print("Rating must be between 1 and 5.")
+                continue
+            
             rating_message = shopping_pb2.RateRequest(
                 id=id,
                 buyer_address=global_buyer_addr,
@@ -116,6 +121,7 @@ def run():
             print(response)
 
         elif option == '5':
+            print()
             print("Logging out...")
             global on
             on = False

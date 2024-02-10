@@ -15,7 +15,7 @@ def notification_thread(stub, global_seller_uuid):
         for response in stub.GetSellerNotifications(seller_notification_message):
             print("The following item has been updated ...")
             print(response)
-        time.sleep(1)
+        time.sleep(0.01)
 
 def get_ip_port():
     ip_address = "127.0.0.1"
@@ -133,6 +133,7 @@ def run():
                 seller_uuid=global_seller_uuid
             )
             for response in stub.GetSellerNotifications(seller_notification_message):
+                print()
                 print("The following item has been updated ...")
                 print(response)
             print("Logging out...")

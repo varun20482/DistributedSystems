@@ -122,8 +122,8 @@ class MarketPlaceServicer(shopping_pb2_grpc.MarketPlaceServicer):
         print(f"Buy request {request.quantity} of item {request.id}, from {request.buyer_address}")
         result = binary_search(self.item_list, request.id)
         if(result != -1):
-            if(self.item_list[result].quantity >= 1):
-                self.item_list[result].quantity-=1
+            if(self.item_list[result].quantity >= request.quantity):
+                self.item_list[result].quantity-=request.quantity
             else:
                 print("Out of Stock.")
                 return shopping_pb2.stringReply(reply="FAIL")
