@@ -8,6 +8,7 @@ import threading
 
 on = True
 def notification_thread(stub, global_buyer_uuid):
+    global on
     while on:
         buyer_notification_message = shopping_pb2.BuyerNotificationRequest(
             buyer_uuid=global_buyer_uuid

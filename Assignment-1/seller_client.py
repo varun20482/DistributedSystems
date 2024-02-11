@@ -8,6 +8,7 @@ import time
 
 on = True
 def notification_thread(stub, global_seller_uuid):
+    global on
     while on:
         seller_notification_message = shopping_pb2.SellerNotificationRequest(
             seller_uuid=global_seller_uuid
