@@ -24,7 +24,7 @@ def get_ip_port():
     return f"{ip_address}:{port}"
 
 def run():
-    channel = grpc.insecure_channel('localhost:50051')
+    channel = grpc.insecure_channel('34.29.92.77:50051')
     stub = shopping_pb2_grpc.MarketPlaceStub(channel)
 
     global_buyer_uuid = str(uuid.uuid1())
