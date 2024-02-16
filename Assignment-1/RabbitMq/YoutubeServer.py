@@ -31,9 +31,9 @@ def consume_user_requests(subscribers, connection, channel):
     def callback(ch, method, properties, body):
         print("Received user request:", body.decode())
         user_data = json.loads(body.decode().replace("'", '"'))
-
+        
         user_name = user_data['user']
-
+        print(f"{user_name} logged in")
         if 'subscribe' in user_data:
             youtuber_name = user_data['youtuber']
             action = user_data['subscribe']
@@ -74,7 +74,7 @@ def send_notification(user, notification):
     connection.close()
 
 def notify_users(youtuber_name, video_name, subscribers):
-    print("youtuber_user_list: ", subscribers)
+    # print("youtuber_user_list: ", subscribers)
     subscribers = load_subscribers()  # Load subscribers from the JSON file
     if youtuber_name in subscribers:
         subscribers_for_youtuber = subscribers[youtuber_name]
@@ -86,7 +86,7 @@ def subscribe_user(user_name, youtuber_name, subscribers):
     if youtuber_name not in subscribers:
         subscribers[youtuber_name] = set()
     subscribers[youtuber_name].add(user_name)
-    print("subscriber_user_list after subscription:", subscribers)
+    # print("subscriber_user_list after subscription:", subscribers)
     print(f"{user_name} subscribed to {youtuber_name}")
     save_subscribers(subscribers)  # Update subscribers in the JSON file
 
