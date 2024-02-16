@@ -5,6 +5,8 @@ class Youtuber:
     def __init__(self, name):
         self.youtuber_name = name
         credentials = pika.PlainCredentials('guest', 'guest')
+        # credentials = pika.PlainCredentials('sam', 'sam')
+        # self.connection = pika.BlockingConnection(pika.ConnectionParameters('35.194.24.139',5672,'/',credentials))
 
         self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
         self.channel = self.connection.channel()
