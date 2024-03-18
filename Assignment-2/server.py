@@ -6,8 +6,9 @@ import time
 import random
 import server_info
 import threading
+import counter
 
-ID=0
+server_id = -1
 
 FOLLOWER = 0
 CANDIDATE = 1
@@ -17,7 +18,9 @@ shutdown = False
 
 class RaftServicer(raft_pb2_grpc.RaftServicer):
     def __init__(self):
-        self.id = ID
+        global server_id
+        print("ID:", server_id)
+        self.id = server_id
         self.current_term = 0
         self.voted_for = -1
         self.log = []
@@ -55,8 +58,8 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         reponse = stub.HeartBeatAppendEntriesRPC(heart_beat_message)
                         print(reponse)
                     except grpc.RpcError as e:
-                        print()
                         print("LEADER: Node down, heartbeat not sent.")
+                        print(e)
                         print()
                         continue
 
@@ -77,6 +80,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         reponse = stub.ElectionRequestVoteRPC(request_vote_message)
                     except grpc.RpcError as e:
                         print("CANDIDATE: Node down, vote request not sent.")
+                        print(e)
                         continue
 
                     if( reponse.term > self.current_term ):
@@ -127,16 +131,18 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
             return raft_pb2.ServeClientReply(Data = "1", LeaderID = self.current_leader, Success = True)
 
 def serve():
+    global server_id 
+    server_id = counter.get_next_id()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raft_servicer_object = RaftServicer()
     raft_pb2_grpc.add_RaftServicer_to_server(raft_servicer_object, server)
-    server.add_insecure_port(server_info.port_number[ID])
+    server.add_insecure_port(server_info.port_number[server_id])
 
     send_info_thread = threading.Thread(target=raft_servicer_object.send_information)
     send_info_thread.start()
 
     server.start()
-    print("Server started. Listening on port", server_info.port_number[ID])
+    print("Server started. Listening on port", server_info.port_number[server_id])
 
     try:
         server.wait_for_termination()
