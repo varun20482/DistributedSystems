@@ -7,11 +7,13 @@ import random
 import server_info
 import threading
 
-ID=2
+ID=0
 
 FOLLOWER = 0
 CANDIDATE = 1
 LEADER = 2
+
+shutdown = False
 
 class RaftServicer(raft_pb2_grpc.RaftServicer):
     def __init__(self):
@@ -30,7 +32,6 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         self.start_time = time.time()
 
     def send_information(self):
-        time.sleep(20)
         stubs = []
         for i in range(len(server_info.available_servers)):
             if(i == self.id):
@@ -38,7 +39,8 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
             channel = grpc.insecure_channel(server_info.available_servers[i])
             stub = stubs.append(raft_pb2_grpc.RaftStub(channel))
 
-        while(True):
+        global shutdown
+        while(not shutdown):
             if(self.current_role == LEADER):
                 heart_beat_message = raft_pb2.appendEntries(
                     term = self.current_term,
@@ -49,8 +51,14 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     leaderCommitIndex = -1
                 )
                 for stub in stubs:
-                    reponse = stub.HeartBeatAppendEntriesRPC(heart_beat_message)
-                    print(reponse)
+                    try:
+                        reponse = stub.HeartBeatAppendEntriesRPC(heart_beat_message)
+                        print(reponse)
+                    except grpc.RpcError as e:
+                        print()
+                        print("LEADER: Node down, heartbeat not sent.")
+                        print()
+                        continue
 
             elif(self.current_role == CANDIDATE):
                 #slide 112 to do
@@ -65,13 +73,18 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     lastLogTerm = -1
                 )
                 for stub in stubs:
-                    reponse = stub.ElectionRequestVoteRPC(request_vote_message)
+                    try:
+                        reponse = stub.ElectionRequestVoteRPC(request_vote_message)
+                    except grpc.RpcError as e:
+                        print("CANDIDATE: Node down, vote request not sent.")
+                        continue
+
                     if( reponse.term > self.current_term ):
                         self.current_term = reponse.term
                         self.current_role = FOLLOWER
                         print("CANDIDATE: Stepping Down to Follower")
                     else:
-                        if(reponse.voteGranted == True):
+                        if(reponse.voteGranted and (reponse.id not in self.votes_received)):
                             self.votes_received.append(reponse.id)
                             print("CANDIDATE: vote received from", reponse.id)
                     if(len(self.votes_received) > (server_info.N / 2)):
@@ -123,12 +136,14 @@ def serve():
     send_info_thread.start()
 
     server.start()
-    print("Server started. Listening on port 50051")
+    print("Server started. Listening on port", server_info.port_number[ID])
 
     try:
         server.wait_for_termination()
     except KeyboardInterrupt:
         print("Received Ctrl+C. Shutting down the server gracefully...")
+        global shutdown
+        shutdown = True
         send_info_thread.join()
         server.stop(None)
 
