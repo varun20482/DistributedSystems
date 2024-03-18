@@ -16,6 +16,8 @@ LEADER = 2
 
 shutdown = False
 
+dataset = {}
+
 class RaftServicer(raft_pb2_grpc.RaftServicer):
     def __init__(self):
         global server_id
@@ -87,15 +89,16 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         self.current_term = reponse.term
                         self.current_role = FOLLOWER
                         print("CANDIDATE: Stepping Down to Follower")
+
                     else:
                         if(reponse.voteGranted and (reponse.id not in self.votes_received)):
                             self.votes_received.append(reponse.id)
                             print("CANDIDATE: vote received from", reponse.id)
-                    if(len(self.votes_received) > (server_info.N / 2)):
-                        self.current_leader = self.id
-                        self.current_role = LEADER
-                        print("CANDIDATE: Elected as Leader")
-                        break
+                        if(len(self.votes_received) > (server_info.N / 2)):
+                            self.current_leader = self.id
+                            self.current_role = LEADER
+                            print("CANDIDATE: Elected as Leader")
+                            break
                      
                     print(reponse)
             else:
@@ -125,10 +128,15 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
     def ServeClient(self, request, context):
         if(self.current_leader != self.id):
             print("FOLLOWER: CLIENT REQUEST")
-            return raft_pb2.ServeClientReply(Data = "-1", LeaderID = self.current_leader, Success = False)
+            return raft_pb2.ServeClientReply(LeaderID = self.current_leader, Success = False)
         else:
             print("LEADER: CLIENT REQUEST")
-            return raft_pb2.ServeClientReply(Data = "1", LeaderID = self.current_leader, Success = True)
+            req = request.Request.split()
+            if( req[0] == "SET" ):
+                dataset[req[1]] = req[2]
+                return raft_pb2.ServeClientReply(Data = req[2], LeaderID = self.current_leader, Success = True)
+            else:
+                return raft_pb2.ServeClientReply(Data = dataset[req[1]], LeaderID = self.current_leader, Success = True)
 
 def serve():
     global server_id 

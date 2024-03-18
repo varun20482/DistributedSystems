@@ -14,6 +14,7 @@ def run():
         print("Options:")
         print("1. SET")
         print("2. GET")
+        print("3. Exit")
 
         option = input("Enter your choice (1 or 2): ")
         action_string = ""
@@ -41,6 +42,10 @@ def run():
                 channel = grpc.insecure_channel(server_info.available_servers[response.LeaderID])
                 stub = raft_pb2_grpc.RaftStub(channel)
             print(response)
+
+        elif option == "3":
+            break
+
         else:
             print("Invalid option.")
 
