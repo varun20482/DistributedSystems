@@ -16,7 +16,7 @@ def run():
         print("2. GET")
         print("3. Exit")
 
-        option = input("Enter your choice (1 or 2): ")
+        option = input("Enter your choice: ")
         action_string = ""
         if option == "1":
             variable_name = input("Enter the variable name: ")

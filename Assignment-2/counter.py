@@ -1,4 +1,5 @@
 import os
+import server_info
 
 COUNTER_FILE_PATH = "counter.txt"
 
@@ -15,7 +16,7 @@ def get_next_id():
     with open(COUNTER_FILE_PATH, "w") as counter_file:
         counter_file.write(str(next_id))
 
-    return (counter_value % 3)
+    return (counter_value % server_info.N)
 
 if __name__ == "__main__":
     next_id = get_next_id()

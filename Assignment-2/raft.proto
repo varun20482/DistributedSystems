@@ -17,7 +17,7 @@ message log {
     string operation = 1;
     string varName = 2;
     string varValue = 3;
-    string term = 4;
+    int32 term = 4;
 }
 
 message appendEntries {
