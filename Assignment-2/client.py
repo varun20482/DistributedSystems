@@ -7,6 +7,7 @@ import server_info
 
 
 def run():
+    server_info.leader_id = 1
     channel = grpc.insecure_channel(server_info.available_servers[server_info.leader_id])
     stub = raft_pb2_grpc.RaftStub(channel)
 
@@ -26,9 +27,11 @@ def run():
             client_message = raft_pb2.ServeClientArgs(Request = action_string)
             response = stub.ServeClient(client_message)
             if(response.LeaderID != server_info.leader_id):
+                print("Incorrect Leader Information.")
                 server_info.leader_id = response.LeaderID
                 channel = grpc.insecure_channel(server_info.available_servers[response.LeaderID])
                 stub = raft_pb2_grpc.RaftStub(channel)
+                print("Updated successfully.")
             print(response)
             
         elif option == "2":
@@ -38,9 +41,11 @@ def run():
             client_message = raft_pb2.ServeClientArgs(Request = action_string)
             response = stub.ServeClient(client_message)
             if(response.LeaderID != server_info.leader_id):
+                print("Incorrect Leader Information.")
                 server_info.leader_id = response.LeaderID
                 channel = grpc.insecure_channel(server_info.available_servers[response.LeaderID])
                 stub = raft_pb2_grpc.RaftStub(channel)
+                print("Updated successfully.")
             print(response)
 
         elif option == "3":

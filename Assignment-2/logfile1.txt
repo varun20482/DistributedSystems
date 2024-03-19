@@ -1,0 +1,75 @@
+operation: "SET"
+varName: "x"
+varValue: "10"
+term: 1
+
+operation: "SET"
+varName: "xyz"
+varValue: "1000"
+term: 1
+
+operation: "SET"
+varName: "wer"
+varValue: "123134"
+term: 1
+
+operation: "GET"
+varName: "x"
+varValue: "10"
+term: 1
+
+operation: "GET"
+varName: "x"
+varValue: "10"
+term: 1
+
+operation: "GET"
+varName: "x"
+varValue: "10"
+term: 1
+
+operation: "SET"
+varName: "asgf"
+varValue: "10"
+term: 1
+
+operation: "SET"
+varName: "x"
+varValue: "10"
+term: 2
+
+operation: "SET"
+varName: "y"
+varValue: "10"
+term: 2
+
+operation: "GET"
+varName: "x"
+varValue: "10"
+term: 2
+
+operation: "GET"
+varName: "y"
+varValue: "10"
+term: 2
+
+operation: "SET"
+varName: "x"
+varValue: "20"
+term: 2
+
+operation: "GET"
+varName: "x"
+varValue: "20"
+term: 2
+
+operation: "SET"
+varName: "y"
+varValue: "20"
+term: 2
+
+operation: "GET"
+varName: "y"
+varValue: "20"
+term: 2
+

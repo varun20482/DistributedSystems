@@ -34,7 +34,11 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         self.ack_length = {}
         self.stubs = []
         self.stub_id = []
+        self.log_index = 0
+        self.file_write_index = 0
         self.log_file = "logfile" + str(self.id) + ".txt"
+        with open("filename.txt", "w") as file:
+            file.write("Log File\n")
         self.time_out = random.randint(5, 10)
         print("TIME_OUT", self.time_out)
         self.start_time = time.time()
@@ -55,7 +59,8 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                 heart_beat_message = raft_pb2.appendEntries(
                     term = self.current_term,
                     leaderId = self.current_leader,
-                    leaderCommitIndex = self.commit_length
+                    leaderCommitIndex = self.commit_length,
+                    entries = self.log
                 )
                 for i in range(server_info.N - 1):
                     stub = self.stubs[i]
@@ -64,7 +69,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         print(reponse)
                     except grpc.RpcError as e:
                         print("LEADER: Node down, heartbeat not sent:", self.stub_id[i])
-                        # print(e)
+                        print(e)
                         print()
                         continue
 
@@ -89,7 +94,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         reponse = stub.ElectionRequestVoteRPC(request_vote_message)
                     except grpc.RpcError as e:
                         print("CANDIDATE: Node down, vote request not sent:", self.stub_id[i])
-                        # print(e)
+                        print(e)
                         continue
                     
                     if(reponse.term == self.current_term and reponse.voteGranted):
@@ -113,7 +118,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                                         reponse = stub.HeartBeatAppendEntriesRPC(raft_pb2.appendEntries(leaderId = self.id))
                                     except grpc.RpcError as e:
                                         print("CANDIDATE: Node down, vote request not sent:", self.stub_id[i])
-                                        # print(e)
+                                        print(e)
                                         continue
                                 break
                     elif( reponse.term > self.current_term ):
@@ -127,10 +132,11 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                 print("===================FOLLOWER=====================")
                 if((time.time() - self.start_time) >= self.time_out):
                     self.current_role = CANDIDATE
-
-            with open(self.log_file, "w") as file:
-                for item in self.log:
+            with open(self.log_file, "a") as file:
+                while(self.file_write_index < len(self.log)):
+                    item = self.log[self.file_write_index]
                     file.write(str(item) + "\n")  
+                    self.file_write_index+=1
             time.sleep(0.001)
 
     def ElectionRequestVoteRPC(self, request, context):
@@ -157,14 +163,22 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         self.start_time = time.time()
         self.current_leader = request.leaderId
         self.current_term = request.term
-        self.log = request.entries #implement later appending logs instead of copying
+        if(request.entries != []):
+            self.log = request.entries #implement later appending logs instead of copying
+
         while(request.leaderCommitIndex > self.commit_length):
             print("FOLLOWER: Log Fast Forward")
-            print("FOLLOWER: INDEX:", self.commit_length)
-            if(self.log[self.commit_length].operation == "SET"):
+            print("FOLLOWER: INDEX:", self.log_index)
+            print("FOLLOWER: To commit operation:", self.log[self.log_index].operation)
+            print("FOLLOWER: Leader CommitIndex", request.leaderCommitIndex, self.commit_length, self.log_index)
+            if(self.log[self.log_index].operation == "SET"):
                 global dataset
-                dataset[self.log[self.commit_length].varName] = self.log[self.commit_length].value
+                print("FOLLOWER: To commit operation varName:", self.log[self.log_index].varName)
+                print("FOLLOWER: To commit operation varValue:", self.log[self.log_index].varValue)
+                dataset[self.log[self.log_index].varName] = self.log[self.log_index].varValue
                 self.commit_length+=1
+            self.log_index += 1
+            print("FOLLOWER: Leader CommitIndex", request.leaderCommitIndex, self.commit_length, self.log_index)
         print(request)
         return raft_pb2.appendEntriesReply(term = self.current_term, success = True)
     
@@ -185,34 +199,34 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     entries = self.log,
                     leaderCommitIndex = self.commit_length
                 )
-                majority = 0
+                majority = 1
                 for i in range(server_info.N - 1):
                     stub = self.stubs[i]
                     self.sent_length[self.stub_id[i]] = len(self.log)
                     try:
                         reponse = stub.HeartBeatAppendEntriesRPC(heart_beat_message)
                     except grpc.RpcError as e:
-                        print("LEADER: Node down, vote request not sent:", self.stub_id[i])
-                        # print(e)
+                        print("LEADER: Node down, append entries was not:", self.stub_id[i])
+                        print(e)
                         continue
                     majority += 1
                     print("MAJORITY", majority)
                     self.ack_length[self.stub_id[i]] = len(self.log)
-                    if(majority > server_info.N/2):
-                        dataset[req[1]] = req[2]
-                        self.commit_length += 1
-                        break
-                return raft_pb2.ServeClientReply(Data = req[2], LeaderID = self.current_leader, Success = True)
+                if(majority > server_info.N/2):
+                    dataset[req[1]] = req[2]
+                    self.commit_length += 1
+                    return raft_pb2.ServeClientReply(Data = req[2], LeaderID = self.current_leader, Success = True)
+                else:
+                    return raft_pb2.ServeClientReply(Data = "LEADER: Could not append to majority nodes.", LeaderID = self.current_leader, Success = False)
             else:
                 if(req[1] not in dataset):
-                    print("xyz", dataset)
                     return raft_pb2.ServeClientReply(Data="Value not found", LeaderID = self.current_leader, Success = False)
                 self.log.append(raft_pb2.log(operation=req[0], varName=req[1], varValue=dataset[req[1]], term=self.current_term))
                 return raft_pb2.ServeClientReply(Data = dataset[req[1]], LeaderID = self.current_leader, Success = True)
 
 def serve():
     global server_id 
-    server_id = counter.get_next_id()
+    server_id = 2
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raft_servicer_object = RaftServicer()
     raft_pb2_grpc.add_RaftServicer_to_server(raft_servicer_object, server)
