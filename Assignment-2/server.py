@@ -36,8 +36,8 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         self.stub_id = []
         self.log_index = 0
         self.file_write_index = 0
-        self.log_file = "logfile" + str(self.id) + ".txt"
-        with open("filename.txt", "w") as file:
+        self.log_file = "logs/logfile" + str(self.id) + ".txt"
+        with open(self.log_file, "w") as file:
             file.write("Log File\n")
         self.time_out = random.randint(5, 10)
         print("TIME_OUT", self.time_out)
@@ -69,7 +69,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         print(reponse)
                     except grpc.RpcError as e:
                         print("LEADER: Node down, heartbeat not sent:", self.stub_id[i])
-                        print(e)
+                        # print(e)
                         print()
                         continue
 
@@ -94,7 +94,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         reponse = stub.ElectionRequestVoteRPC(request_vote_message)
                     except grpc.RpcError as e:
                         print("CANDIDATE: Node down, vote request not sent:", self.stub_id[i])
-                        print(e)
+                        # print(e)
                         continue
                     
                     if(reponse.term == self.current_term and reponse.voteGranted):
@@ -118,18 +118,20 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                                         reponse = stub.HeartBeatAppendEntriesRPC(raft_pb2.appendEntries(leaderId = self.id))
                                     except grpc.RpcError as e:
                                         print("CANDIDATE: Node down, vote request not sent:", self.stub_id[i])
-                                        print(e)
+                                        # print(e)
                                         continue
                                 break
                     elif( reponse.term > self.current_term ):
                         self.current_term = reponse.term
                         self.current_role = FOLLOWER
+                        self.start_time = time.time()
                         self.voted_for = -1
                         self.votes_received = []
                         print("CANDIDATE: Stepping Down to Follower")
+                        break
                     print(reponse)
             else:
-                print("===================FOLLOWER=====================")
+                print("===================FOLLOWER IN TIMEOUT=====================")
                 if((time.time() - self.start_time) >= self.time_out):
                     self.current_role = CANDIDATE
             with open(self.log_file, "a") as file:
@@ -137,7 +139,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     item = self.log[self.file_write_index]
                     file.write(str(item) + "\n")  
                     self.file_write_index+=1
-            time.sleep(0.001)
+            time.sleep(0.01)
 
     def ElectionRequestVoteRPC(self, request, context):
         print("FOLLOWER: Vote Request")
@@ -146,12 +148,13 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
             print("FOLLOWER: Vote Granted")
             self.current_term = request.term
             self.current_role = FOLLOWER
+            self.start_time = time.time()
             self.voted_for = -1
         last_term = 0
         if(len(self.log) > 0):
-            last_term = self.log[-1]
+            last_term = self.log[-1].term
         logOk = (request.lastLogTerm > last_term) or (request.lastLogTerm == last_term and request.lastLogIndex >= len(self.log))
-        if(request.term == self.current_term and logOk and (self.voted_for == request.cid or self.voted_for == -1)):
+        if(request.term == self.current_term and logOk and (self.voted_for == -1)):
             self.voted_for = request.cid
             return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = True, id = self.id)
         else:
@@ -162,6 +165,10 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         print("FOLLOWER: HeartBeat from leader")
         self.start_time = time.time()
         self.current_leader = request.leaderId
+        if(self.current_term < request.term):
+            self.current_term = request.term
+            self.current_role = FOLLOWER
+            self.start_time = time.time()
         self.current_term = request.term
         if(request.entries != []):
             self.log = request.entries #implement later appending logs instead of copying
@@ -207,7 +214,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         reponse = stub.HeartBeatAppendEntriesRPC(heart_beat_message)
                     except grpc.RpcError as e:
                         print("LEADER: Node down, append entries was not:", self.stub_id[i])
-                        print(e)
+                        # print(e)
                         continue
                     majority += 1
                     print("MAJORITY", majority)
