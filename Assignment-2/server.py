@@ -123,6 +123,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                                 break
                     elif( reponse.term > self.current_term ):
                         self.current_term = reponse.term
+                        self.log = reponse.entries
                         self.current_role = FOLLOWER
                         self.start_time = time.time()
                         self.voted_for = -1
@@ -130,6 +131,11 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         print("CANDIDATE: Stepping Down to Follower")
                         break
                     print(reponse)
+                if(self.current_role == CANDIDATE):
+                    self.current_role = FOLLOWER
+                    self.start_time = time.time()
+                    self.voted_for = -1
+                    self.votes_received = []
             else:
                 print("===================FOLLOWER IN TIMEOUT=====================")
                 if((time.time() - self.start_time) >= self.time_out):
@@ -159,7 +165,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
             return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = True, id = self.id)
         else:
             print("FOLLOWER: Vote Denied")
-            return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = False, id = self.id)
+            return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = False, id = self.id, entries = self.log)
     
     def HeartBeatAppendEntriesRPC(self, request, context):
         print("FOLLOWER: HeartBeat from leader")
@@ -233,7 +239,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
 
 def serve():
     global server_id 
-    server_id = 2
+    server_id = 0
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raft_servicer_object = RaftServicer()
     raft_pb2_grpc.add_RaftServicer_to_server(raft_servicer_object, server)

@@ -11,6 +11,7 @@ message requestVoteReply {
     int32 term = 1;
     bool voteGranted = 2;
     int32 id = 3;
+    repeated log entries = 4;
 }
 
 message log {

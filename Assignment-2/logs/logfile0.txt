@@ -1,0 +1,21 @@
+Log File
+operation: "SET"
+varName: "x"
+varValue: "10"
+term: 2
+
+operation: "SET"
+varName: "y"
+varValue: "20"
+term: 2
+
+operation: "GET"
+varName: "x"
+varValue: "10"
+term: 2
+
+operation: "GET"
+varName: "y"
+varValue: "20"
+term: 2
+
