@@ -7,7 +7,6 @@ import server_info
 
 
 def run():
-    server_info.leader_id = 1
     channel = grpc.insecure_channel(server_info.available_servers[server_info.leader_id])
     stub = raft_pb2_grpc.RaftStub(channel)
 
@@ -25,7 +24,15 @@ def run():
             action_string = "SET {} {}".format(variable_name, value)
             print("SET {} {}".format(variable_name, value))
             client_message = raft_pb2.ServeClientArgs(Request = action_string)
-            response = stub.ServeClient(client_message)
+            try:
+                response = stub.ServeClient(client_message)
+            except grpc.RpcError as e:
+                print("CLIENT: Node down, request unable to send request to", server_info.leader_id)
+                server_info.leader_id += 1
+                server_info.leader_id %= server_info.N
+                print("CLIENT: Leader updated to", server_info.leader_id)
+                continue
+
             if(response.LeaderID != server_info.leader_id):
                 print("Incorrect Leader Information.")
                 server_info.leader_id = response.LeaderID
@@ -39,7 +46,15 @@ def run():
             action_string = "GET " + variable_name
             print("GET", variable_name)
             client_message = raft_pb2.ServeClientArgs(Request = action_string)
-            response = stub.ServeClient(client_message)
+            try:
+                response = stub.ServeClient(client_message)
+            except grpc.RpcError as e:
+                print("CLIENT: Node down, request unable to send request to", server_info.leader_id)
+                server_info.leader_id += 1
+                server_info.leader_id %= server_info.N
+                print("CLIENT: Leader updated to", server_info.leader_id)
+                continue
+            
             if(response.LeaderID != server_info.leader_id):
                 print("Incorrect Leader Information.")
                 server_info.leader_id = response.LeaderID
