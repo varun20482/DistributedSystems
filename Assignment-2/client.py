@@ -27,13 +27,19 @@ def run():
             try:
                 response = stub.ServeClient(client_message)
             except grpc.RpcError as e:
+                # print(e)
                 print("CLIENT: Node down, request unable to send request to", server_info.leader_id)
                 server_info.leader_id += 1
                 server_info.leader_id %= server_info.N
+                channel = grpc.insecure_channel(server_info.available_servers[server_info.leader_id])
+                stub = raft_pb2_grpc.RaftStub(channel)
                 print("CLIENT: Leader updated to", server_info.leader_id)
                 continue
 
             if(response.LeaderID != server_info.leader_id):
+                if(response.LeaderID == -1):
+                    print("No leader in the system. Wait for a few seconds.")
+                    continue
                 print("Incorrect Leader Information.")
                 server_info.leader_id = response.LeaderID
                 channel = grpc.insecure_channel(server_info.available_servers[response.LeaderID])
@@ -49,13 +55,19 @@ def run():
             try:
                 response = stub.ServeClient(client_message)
             except grpc.RpcError as e:
+                # print(e)
                 print("CLIENT: Node down, request unable to send request to", server_info.leader_id)
                 server_info.leader_id += 1
                 server_info.leader_id %= server_info.N
+                channel = grpc.insecure_channel(server_info.available_servers[server_info.leader_id])
+                stub = raft_pb2_grpc.RaftStub(channel)
                 print("CLIENT: Leader updated to", server_info.leader_id)
                 continue
             
             if(response.LeaderID != server_info.leader_id):
+                if(response.LeaderID == -1):
+                    print("No leader in the system. Wait for a few seconds.")
+                    continue
                 print("Incorrect Leader Information.")
                 server_info.leader_id = response.LeaderID
                 channel = grpc.insecure_channel(server_info.available_servers[response.LeaderID])

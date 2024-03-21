@@ -1,0 +1,87 @@
+ID: 3
+TIME_OUT 9
+Server started. Listening on port [::]:50054
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+Node ID: 3 Election Timer Timed out. Starting Election.
+===================CANDIDATE=====================
+CANDIDATE: Vote requested from 0
+CANDIDATE: Node down, vote request not sent: 0
+CANDIDATE: Vote requested from 1
+CANDIDATE: Node down, vote request not sent: 1
+CANDIDATE: Vote requested from 2
+CANDIDATE: Node down, vote request not sent: 2
+CANDIDATE: Vote requested from 4
+CANDIDATE: Node down, vote request not sent: 4
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+Node ID: 3 Election Timer Timed out. Starting Election.
+===================CANDIDATE=====================
+CANDIDATE: Vote requested from 0
+CANDIDATE: Node down, vote request not sent: 0
+CANDIDATE: Vote requested from 1
+CANDIDATE: Node down, vote request not sent: 1
+CANDIDATE: Vote requested from 2
+CANDIDATE: Node down, vote request not sent: 2
+CANDIDATE: Vote requested from 4
+CANDIDATE: Node down, vote request not sent: 4
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+Node ID: 3 Election Timer Timed out. Starting Election.
+===================CANDIDATE=====================
+CANDIDATE: Vote requested from 0
+CANDIDATE: Node down, vote request not sent: 0
+CANDIDATE: Vote requested from 1
+CANDIDATE: Node down, vote request not sent: 1
+CANDIDATE: Vote requested from 2
+CANDIDATE: Node down, vote request not sent: 2
+CANDIDATE: Vote requested from 4
+CANDIDATE: Node down, vote request not sent: 4
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+Node ID: 3 Election Timer Timed out. Starting Election.
+===================CANDIDATE=====================
+CANDIDATE: Vote requested from 0
+CANDIDATE: Node down, vote request not sent: 0
+CANDIDATE: Vote requested from 1
+CANDIDATE: Node down, vote request not sent: 1
+CANDIDATE: Vote requested from 2
+CANDIDATE: Node down, vote request not sent: 2
+CANDIDATE: Vote requested from 4
+CANDIDATE: Node down, vote request not sent: 4
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
