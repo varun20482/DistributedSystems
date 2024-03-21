@@ -1,5 +1,5 @@
 ID: 1
-TIME_OUT 9
+TIME_OUT 6
 ===================FOLLOWER IN TIMEOUT=====================
 Server started. Listening on port [::]:50052
 ===================FOLLOWER IN TIMEOUT=====================
@@ -8,982 +8,347 @@ Server started. Listening on port [::]:50052
 ===================FOLLOWER IN TIMEOUT=====================
 ===================FOLLOWER IN TIMEOUT=====================
 ===================FOLLOWER IN TIMEOUT=====================
-===================FOLLOWER IN TIMEOUT=====================
-===================FOLLOWER IN TIMEOUT=====================
-===================FOLLOWER IN TIMEOUT=====================
 Node ID: 1 Election Timer Timed out. Starting Election.
-===================CANDIDATE=====================
-CANDIDATE: Vote requested from 0
-CANDIDATE: Vote Granted from 0
-CANDIDATE: Majority votes received
-CANDIDATE: Elected as Leader
-Node: 1 elected as leader for Term: 1
-CANDIDATE: Sent leader ack to 0
-CANDIDATE: Sent leader ack to 2
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
-Heart Beat sent to node: 2
-Heart beat response from: 2
-Term of node: 2 is 1
-Heart Beat Success: True
-
-===================LEADER=====================
-Leader: 1 sending renewal and heartbeat.
-Heart Beat sent to node: 0
-Heart beat response from: 0
-Term of node: 0 is 1
-Heart Beat Success: True
-
+FOLLOWER: HeartBeat from leader
+FOLLOWER: ID: 1 accepted append entries RPC from  2
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader
+===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader

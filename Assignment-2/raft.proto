@@ -12,6 +12,7 @@ message requestVoteReply {
     bool voteGranted = 2;
     int32 id = 3;
     repeated log entries = 4;
+    int32 leaderLeaseStartTime = 5
 }
 
 message log {

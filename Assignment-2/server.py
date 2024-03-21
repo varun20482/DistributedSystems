@@ -14,6 +14,8 @@ FOLLOWER = 0
 CANDIDATE = 1
 LEADER = 2
 
+LEASE_TIMER = 10
+
 shutdown = False
 
 dataset = {}
@@ -36,6 +38,8 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         self.stub_id = []
         self.log_index = 0
         self.file_write_index = 0
+        self.lease_start_time = 0
+        self.lease_of_leader = -1
         self.log_file = "logs/logfile" + str(self.id) + ".txt"
         with open(self.log_file, "w") as file:
             file.write("Log File\n")
@@ -62,20 +66,26 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     leaderCommitIndex = self.commit_length,
                     entries = self.log
                 )
-                for i in range(server_info.N - 1):
-                    stub = self.stubs[i]
-                    try:
-                        reponse = stub.HeartBeatAppendEntriesRPC(heart_beat_message)
-                        print("Heart Beat sent to node:", self.stub_id[i])
-                        print("Heart beat response from:", self.stub_id[i])
-                        print("Term of node:", self.stub_id[i], "is", reponse.term)
-                        print("Heart Beat Success:", reponse.success)
-                        print()
-                    except grpc.RpcError as e:
-                        print("LEADER: Node down, heartbeat not sent:", self.stub_id[i])
-                        # print(e)
-                        print()
-                        continue
+                if(self.lease_of_leader == -1):
+                    self.lease_of_leader = self.id
+                    self.lease_start_time = time.time()
+                    print("LEADER: ID:", self.id, "old leader lease expired. New lease started.")
+                    for i in range(server_info.N - 1):
+                        stub = self.stubs[i]
+                        try:
+                            reponse = stub.HeartBeatAppendEntriesRPC(heart_beat_message)
+                            print("Heart Beat sent to node:", self.stub_id[i])
+                            print("Heart beat response from:", self.stub_id[i])
+                            print("Term of node:", self.stub_id[i], "is", reponse.term)
+                            print("Heart Beat Success:", reponse.success)
+                            print()
+                        except grpc.RpcError as e:
+                            print("LEADER: Node down, heartbeat not sent:", self.stub_id[i])
+                            # print(e)
+                            print()
+                            continue
+                else:
+                    print("LEADER: ID:", self.id, "waiting for old leader lease to time out.")
 
             elif(self.current_role == CANDIDATE):
                 print("===================CANDIDATE=====================")
@@ -100,27 +110,35 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         print("CANDIDATE: Node down, vote request not sent:", self.stub_id[i])
                         # print(e)
                         continue
-                    
+                    highest_timer = max(self.lease_start_time, reponse.leaderLeaseStartTime)
                     if(reponse.term == self.current_term and reponse.voteGranted):
                         print("CANDIDATE: Vote Granted from", reponse.id)
                         self.votes_received.append(reponse.id)
                         if(len(self.votes_received) > (server_info.N / 2)):
                                 print("CANDIDATE: Majority votes received")
+                                self.lease_start_time = highest_timer
                                 self.current_leader = self.id
                                 self.current_role = LEADER
                                 self.voted_for = -1
                                 self.votes_received = []
                                 print("CANDIDATE: Elected as Leader")
                                 print("Node:", self.id, "elected as leader for Term:", self.current_term)
-                
+                                self.log.append(raft_pb2.log(operation = "NO-OP", term = self.current_term))
+
                                 for i in range(server_info.N - 1):
                                     print("CANDIDATE: Sent leader ack to", self.stub_id[i])
                                     stub = self.stubs[i]
-
                                     self.sent_length[self.stub_id[i]] = len(self.log)
                                     self.ack_length[self.stub_id[i]] = 0
                                     try:
-                                        reponse = stub.HeartBeatAppendEntriesRPC(raft_pb2.appendEntries(leaderId = self.id))
+                                        reponse = stub.HeartBeatAppendEntriesRPC(
+                                            raft_pb2.appendEntries(term = self.current_term,
+                                            leaderId = self.id,
+                                            prevLogIndex = len(self.log),
+                                            prevLogTerm = self.current_term,
+                                            entries = self.log,
+                                            leaderCommitIndex = self.commit_length)
+                                            )
                                     except grpc.RpcError as e:
                                         print("CANDIDATE: Node down, vote request not sent:", self.stub_id[i])
                                         # print(e)
@@ -151,6 +169,11 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     item = self.log[self.file_write_index]
                     file.write(str(item) + "\n")  
                     self.file_write_index+=1
+            if(self.lease_of_leader != -1):
+                if(time.time() - self.lease_start_time >= LEASE_TIMER):
+                    if(self.current_role == LEADER):
+                        print("LEADER: ID:", self.id," Lease renewal FAILED. Stepping Down.")
+                    self.lease_of_leader = -1
             time.sleep(1)
 
     def ElectionRequestVoteRPC(self, request, context):
@@ -169,15 +192,17 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         logOk = (request.lastLogTerm > last_term) or (request.lastLogTerm == last_term and request.lastLogIndex >= len(self.log))
         if(request.term == self.current_term and logOk and (self.voted_for == -1)):
             self.voted_for = request.cid
-            return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = True, id = self.id)
+            return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = True, id = self.id, leaderLeaseStartTime = self.lease_start_time)
         else:
             print("FOLLOWER: Vote Denied to node", request.cid, "for term:", request.term)
-            return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = False, id = self.id, entries = self.log)
+            return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = False, id = self.id, entries = self.log, leaderLeaseStartTime = self.lease_start_time)
     
     def HeartBeatAppendEntriesRPC(self, request, context):
         print("FOLLOWER: HeartBeat from leader")
         self.start_time = time.time()
         self.current_leader = request.leaderId
+        self.lease_start_time = time.time()
+        self.lease_of_leader = request.leaderId
         if(self.current_term < request.term):
             self.current_term = request.term
             self.current_role = FOLLOWER
@@ -208,9 +233,11 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
     def ServeClient(self, request, context):
         if(self.current_leader != self.id):
             print("FOLLOWER: CLIENT REQUEST")
-            return raft_pb2.ServeClientReply(LeaderID = self.current_leader, Success = False)
+            return raft_pb2.ServeClientReply(Data = "FOLLOWER: Operations can be perfomed only by the leader.", LeaderID = self.current_leader, Success = False)
         else:
             print("LEADER: CLIENT REQUEST")
+            if(self.lease_of_leader != self.id):
+                return raft_pb2.ServeClientReply(Data = "LEADER: The old leader lease has not timed out.", LeaderID = self.current_leader, Success = False)
             req = request.Request.split()
             print("LEADER: ID:", self.id, "received a", request.Request, "request")
             if( req[0] == "SET" ):
@@ -251,7 +278,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
 
 def serve():
     global server_id 
-    server_id = 1
+    server_id = counter.get_next_id()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raft_servicer_object = RaftServicer()
     raft_pb2_grpc.add_RaftServicer_to_server(raft_servicer_object, server)

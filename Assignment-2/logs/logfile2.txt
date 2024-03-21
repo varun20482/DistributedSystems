@@ -1,1 +1,7 @@
 Log File
+operation: "NO-OP"
+term: 1
+
+operation: "NO-OP"
+term: 1
+
