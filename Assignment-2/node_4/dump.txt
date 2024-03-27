@@ -1,10 +1,8 @@
-ID: 3
-TIME_OUT 5
-Server started. Listening on port [::]:50054
+ID: 4
+TIME_OUT 8
+Server started. Listening on port [::]:50055
 FOLLOWER: HeartBeat from leader id: 0
-FOLLOWER: ID: 3 accepted append entries RPC from  0
-FOLLOWER: HeartBeat from leader id: 0
-FOLLOWER: HeartBeat from leader id: 0
+FOLLOWER: ID: 4 accepted append entries RPC from  0
 FOLLOWER: HeartBeat from leader id: 0
 FOLLOWER: HeartBeat from leader id: 0
 FOLLOWER: HeartBeat from leader id: 0
@@ -34,11 +32,10 @@ FOLLOWER: HeartBeat from leader id: 0
 FOLLOWER: HeartBeat from leader id: 0
 FOLLOWER: HeartBeat from leader id: 0
 FOLLOWER: HeartBeat from leader id: 0
-===================FOLLOWER IN TIMEOUT=====================
 FOLLOWER: HeartBeat from leader id: 0
-===================FOLLOWER IN TIMEOUT=====================
 FOLLOWER: HeartBeat from leader id: 0
-===================FOLLOWER IN TIMEOUT=====================
+FOLLOWER: HeartBeat from leader id: 0
+FOLLOWER: HeartBeat from leader id: 0
 FOLLOWER: HeartBeat from leader id: 0
 ===================FOLLOWER IN TIMEOUT=====================
 FOLLOWER: HeartBeat from leader id: 0
@@ -106,6 +103,7 @@ FOLLOWER: HeartBeat from leader id: 0
 FOLLOWER: HeartBeat from leader id: 0
 ===================FOLLOWER IN TIMEOUT=====================
 FOLLOWER: HeartBeat from leader id: 0
+===================FOLLOWER IN TIMEOUT=====================
 ===================FOLLOWER IN TIMEOUT=====================
 ===================FOLLOWER IN TIMEOUT=====================
 ===================FOLLOWER IN TIMEOUT=====================

@@ -9,6 +9,7 @@ import threading
 import counter
 import os
 import sys
+import pickle
 
 # Save the reference to the original stdout
 original_stdout = sys.stdout
@@ -32,10 +33,22 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         global folder
         self.folder_name = folder
         self.id = server_id
-        self.current_term = 0
         self.voted_for = -1
         self.log = []
+
+        if os.path.exists(self.folder_name + '/log.pkl'):
+            with open(self.folder_name + '/log.pkl', 'rb') as f:
+                self.log = pickle.load(f)
+
+        self.current_term = 0
+        if(len(self.log) != 0):
+            self.current_term = self.log[-1].term
+
         self.commit_length = 0
+        for log in self.log:
+            if(log.operation == "SET"):
+                self.commit_length += 1
+
         self.current_role = FOLLOWER
         self.current_leader = -1
         self.votes_received = []
@@ -51,12 +64,14 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
         self.metadata_file = self.folder_name + "/metadata.txt"
         with open(self.log_file, "w") as file:
             file.write("Log File\n")
+        with open(self.metadata_file, "w") as file:
+            file.write("Meta Data File\n")
         self.time_out = random.randint(5, 10)
         print("TIME_OUT", self.time_out, flush=True)
         self.start_time = time.time()
 
     def send_information(self):
-        time.sleep(10)
+        time.sleep(60)
         self.start_time = time.time()
         for i in range(len(server_info.available_servers)):
             if(i == self.id):
@@ -81,7 +96,9 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     self.lease_start_time = time.time()
                     print("LEADER: ID:", self.id, "old leader lease expired. New lease started.", flush=True)
                 else:
-                    print("LEADER: ID:", self.id, "waiting for old leader lease to time out.", flush=True)
+                    if(self.lease_of_leader != self.id):
+                        print("LEADER: ID:", self.id, "waiting for old leader lease to time out.", flush=True)
+                renewed = False
                 majority = 1
                 for i in range(server_info.N - 1):
                     stub = self.stubs[i]
@@ -99,7 +116,9 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                         print(flush=True)
                         continue
 
-                    if(majority > server_info.N / 2 and self.lease_of_leader == self.id):
+                    if(not renewed and majority > server_info.N / 2 and self.lease_of_leader == self.id):
+                        renewed = True
+                        self.lease_start_time = time.time()
                         print("LEADER: ID:", self.id, "renewing lease.", flush=True)
 
             elif(self.current_role == CANDIDATE):
@@ -223,7 +242,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
             return raft_pb2.requestVoteReply(term = self.current_term, voteGranted = False, id = self.id, entries = self.log, leaderLeaseStartTime = self.lease_start_time)
     
     def HeartBeatAppendEntriesRPC(self, request, context):
-        print("FOLLOWER: HeartBeat from leader", flush=True)
+        print("FOLLOWER: HeartBeat from leader id:", request.leaderId, flush=True)
         self.start_time = time.time()
         self.current_leader = request.leaderId
         self.lease_start_time = time.time()
@@ -260,6 +279,13 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                 print("FOLLOWER: To commit operation varValue:", self.log[self.log_index].varValue, flush=True)
                 dataset[self.log[self.log_index].varName] = self.log[self.log_index].varValue
                 self.commit_length+=1
+                with open(self.metadata_file, "a") as file:
+                    file.write(f"FOLLOWER: ID: {self.id} TERM: {self.current_term}\n")
+                    file.write(f"FOLLOWER: To commit operation varName: {self.log[self.log_index].varName}\n")
+                    file.write(f"FOLLOWER: To commit operation varValue: {self.log[self.log_index].varValue}\n")
+                    file.write(f"FOLLOWER: Commit length: {self.commit_length}\n")
+                    file.write(f"FOLLOWER: Commit Time: {time.time()}\n")
+
             self.log_index += 1
             print("FOLLOWER: Leader CommitIndex", request.leaderCommitIndex, self.commit_length, self.log_index, flush=True)
         return raft_pb2.appendEntriesReply(term = self.current_term, success = True)
@@ -301,6 +327,13 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
                     print("LEADER: ID:", self.id, "commited the entry", request.Request, "to the state machine.", flush=True)
                     dataset[req[1]] = req[2]
                     self.commit_length += 1
+                    with open(self.metadata_file, "a") as file:
+                        file.write(f"LEADER: ID: {self.id} TERM: {self.current_term}\n")
+                        file.write(f"LEADER: To commit operation varName: {req[1]}\n")
+                        file.write(f"LEADER: To commit operation varValue: {req[2]}\n")
+                        file.write(f"LEADER: Commit length: {self.commit_length}\n")
+                        file.write(f"LEADER: Commit Time: {time.time()}\n")
+
                     return raft_pb2.ServeClientReply(Data = req[2], LeaderID = self.current_leader, Success = True)
                 else:
                     return raft_pb2.ServeClientReply(Data = "LEADER: Could not append to majority nodes.", LeaderID = self.current_leader, Success = False)
@@ -316,6 +349,12 @@ def serve():
     global folder
     folder = "node_" + str(server_id)
     os.makedirs(folder, exist_ok=True)
+    
+    if os.path.exists(folder + '/database.pkl'):
+        with open(folder + '/database.pkl', 'rb') as f:
+            global dataset
+            dataset = pickle.load(f)
+
     with open(folder + "/dump.txt", 'w') as f:
         sys.stdout = f
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -337,7 +376,10 @@ def serve():
             shutdown = True
             send_info_thread.join()
             server.stop(None)
-
+            with open(raft_servicer_object.folder_name + '/log.pkl', 'wb') as f:
+                pickle.dump(raft_servicer_object.log, f)
+            with open(raft_servicer_object.folder_name + '/database.pkl', 'wb') as f:
+                pickle.dump(dataset, f)
         sys.stdout = original_stdout
 
 if __name__ == '__main__':
