@@ -345,7 +345,7 @@ class RaftServicer(raft_pb2_grpc.RaftServicer):
 
 def serve():
     global server_id 
-    server_id = counter.get_next_id()
+    server_id = 4
     global folder
     folder = "node_" + str(server_id)
     os.makedirs(folder, exist_ok=True)

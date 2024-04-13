@@ -41,6 +41,7 @@ def run():
                     print("No leader in the system. Wait for a few seconds.")
                     continue
                 print("Incorrect Leader Information.")
+                print("Correct leaderID:", response.LeaderID)
                 server_info.leader_id = response.LeaderID
                 channel = grpc.insecure_channel(server_info.available_servers[response.LeaderID])
                 stub = raft_pb2_grpc.RaftStub(channel)
@@ -69,6 +70,7 @@ def run():
                     print("No leader in the system. Wait for a few seconds.")
                     continue
                 print("Incorrect Leader Information.")
+                print("Correct leaderID:", response.LeaderID)
                 server_info.leader_id = response.LeaderID
                 channel = grpc.insecure_channel(server_info.available_servers[response.LeaderID])
                 stub = raft_pb2_grpc.RaftStub(channel)

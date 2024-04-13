@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+message coordinate {
+  float x = 1;
+  float y = 2;
+}
+
+message chunk {
+  int32 start_index = 1;
+  int32 end_index = 2;
+}
+
+message mapInfo {
+  chunk indices = 1;
+  repeated coordinate centroids = 2;
+}
+
+message keyVal {
+  int32 key = 1;
+  coordinate value = 2;
+}
+
+message returnMap {
+    repeated keyVal dict = 1;
+}
+
+message reply {
+  bool success = 1;
+}
+
+service KMeans {
+  rpc Map(mapInfo) returns (returnMap) {}
+  rpc Partition(returnMap) returns (reply) {}
+}
