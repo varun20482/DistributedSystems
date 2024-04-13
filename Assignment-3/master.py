@@ -45,28 +45,25 @@ def run():
         mapper_chunks.append(read_file_in_chunks(common.input_path, common.MAPPERS, i))
 
     centroids = []
-    print("==============================CENTROIDS==============================")
+    print("=====CENTROIDS=====")
     for i in range(0, common.CENTROIDS):
         x = random.uniform(common.coordinates_from, common.coordinates_to)
         y = random.uniform(common.coordinates_from, common.coordinates_to)
         centroids.append(kmeans_pb2.coordinate(x=x, y=y))
-    print("=====================================================================")
+    print(centroids)
+    print("===================")
 
-    map_responses = []
-    #parallelise this for loop
     for i in range(0, common.MAPPERS):
-        print(f"==============================MAPPER_{i}==============================")
+        print(f"=====MAPPER_{i}=====")
         response = mapper_stubs[i].Map(kmeans_pb2.mapInfo(indices=mapper_chunks[i], centroids=centroids))
-        map_responses.append(response)
-        for item in response.dict:
-            print("Key:",item.key,"Value:", item.value)
-        print("====================================================================")
-    
-    for i in range(0, common.MAPPERS):
-        print(f"==============================MAPPER_{i}==============================")
-        response = mapper_stubs[i].Partition(map_responses[i])
         print(response)
-        print("====================================================================")
+        print("===================")  
+    
+    for i in range(0, common.REDUCERS):
+        print(f"=====REDUCER_{i}=====")
+        response = reducer_stubs[i].Reduce(kmeans_pb2.reduceInfo(id = i))
+        print(response)
+        print("===================")  
 
 if __name__ == '__main__':
     run()

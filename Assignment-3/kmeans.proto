@@ -20,8 +20,12 @@ message keyVal {
   coordinate value = 2;
 }
 
-message returnMap {
-    repeated keyVal dict = 1;
+message keyValDict {
+  repeated keyVal dict = 1;
+}
+
+message reduceInfo {
+  int32 id = 1;
 }
 
 message reply {
@@ -29,6 +33,7 @@ message reply {
 }
 
 service KMeans {
-  rpc Map(mapInfo) returns (returnMap) {}
-  rpc Partition(returnMap) returns (reply) {}
+  rpc Map(mapInfo) returns (reply) {}
+  rpc Reduce(reduceInfo) returns (keyValDict) {}
+  rpc GetPartition(reduceInfo) returns (keyValDict) {}
 }

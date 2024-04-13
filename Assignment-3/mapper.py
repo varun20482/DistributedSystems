@@ -39,10 +39,14 @@ def distance(point1, point2):
     return distance
 
 class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
-    def __int__(self):
+    def __init__(self):
         self.id = int(sys.argv[1])
 
     def Map(self, request, context):
+        for i in range(0, common.REDUCERS):
+            filename = f"mappers/M{int(sys.argv[1]) + 1}/partition_{i + 1}.txt"
+            with open(filename, 'w') as file:
+                file.write("")
         start_index = request.indices.start_index
         end_index = request.indices.end_index
         data_points = read_entries(common.input_path, start_index, end_index)
@@ -57,32 +61,49 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                 if(nearest_centroid == -1 or temp < current_distance):
                     nearest_centroid = key
                     current_distance = temp
-            dict.append(kmeans_pb2.keyVal(key = nearest_centroid, value = point))   
-        return kmeans_pb2.returnMap(dict = dict)
+            dict.append(kmeans_pb2.keyVal(key = nearest_centroid, value = point))
 
-    def Partition(self, request, context):
+        print(f"=====MAPPING_{self.id}=====")
+        print(dict)
+        print("===================")  
+
+        response = self.Partition(kmeans_pb2.keyValDict(dict = dict))
+        print(f"====PARTITION_{self.id}=====")
+        print(response)
+        print("===================")  
+        return kmeans_pb2.reply(success=True)
+
+    def Partition(self, request):
         dict = sorted(request.dict, key=get_coordinates)
-        last_key = -1
-        reducer_id = -1
+        print(dict)
         for item in dict:
-            if(last_key == -1 or last_key != item.key):
-                reducer_id += 1
-                reducer_id %= common.REDUCERS
+            reducer_id = item.key % common.REDUCERS
             filename = f"mappers/M{int(sys.argv[1]) + 1}/partition_{reducer_id + 1}.txt"
             with open(filename, 'a') as file:
                 file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
-            last_key = item.key
         return kmeans_pb2.reply(success=True)
+    
+    def GetPartition(self, request, context):
+        dict = []
+        filename = f"mappers/M{self.id+1}/partition_{request.id + 1}.txt"
+        with open(filename, 'r') as file:
+            for line in file:
+                line = line.strip()
+                if line:
+                    parts = line.split(':')
+                    if len(parts) == 2:
+                        key = int(parts[0])
+                        x, y = parts[1].strip('()').split(',')
+                        x = float(x)
+                        y = float(y)
+                        point = kmeans_pb2.coordinate(x=x, y=y)
+                        dict.append(kmeans_pb2.keyVal(key = key, value = point))
+        return kmeans_pb2.keyValDict(dict = dict)
 
 def serve():
     directory = 'mappers/M' + str(int(sys.argv[1]) + 1)
     if not os.path.exists(directory):
         os.makedirs(directory)
-    for i in range(0, common.REDUCERS):
-        filename = f"mappers/M{int(sys.argv[1]) + 1}/partition_{i + 1}.txt"
-        print(filename)
-        with open(filename, 'w') as file:
-            file.write("")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     kmeans_pb2_grpc.add_KMeansServicer_to_server(KMeansServicer(), server)
     server.add_insecure_port(common.mapper_ports[int(sys.argv[1])])

@@ -17,12 +17,17 @@ class KMeansStub(object):
         self.Map = channel.unary_unary(
                 '/KMeans/Map',
                 request_serializer=kmeans__pb2.mapInfo.SerializeToString,
-                response_deserializer=kmeans__pb2.returnMap.FromString,
-                )
-        self.Partition = channel.unary_unary(
-                '/KMeans/Partition',
-                request_serializer=kmeans__pb2.returnMap.SerializeToString,
                 response_deserializer=kmeans__pb2.reply.FromString,
+                )
+        self.Reduce = channel.unary_unary(
+                '/KMeans/Reduce',
+                request_serializer=kmeans__pb2.reduceInfo.SerializeToString,
+                response_deserializer=kmeans__pb2.keyValDict.FromString,
+                )
+        self.GetPartition = channel.unary_unary(
+                '/KMeans/GetPartition',
+                request_serializer=kmeans__pb2.reduceInfo.SerializeToString,
+                response_deserializer=kmeans__pb2.keyValDict.FromString,
                 )
 
 
@@ -35,7 +40,13 @@ class KMeansServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Partition(self, request, context):
+    def Reduce(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPartition(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -47,12 +58,17 @@ def add_KMeansServicer_to_server(servicer, server):
             'Map': grpc.unary_unary_rpc_method_handler(
                     servicer.Map,
                     request_deserializer=kmeans__pb2.mapInfo.FromString,
-                    response_serializer=kmeans__pb2.returnMap.SerializeToString,
-            ),
-            'Partition': grpc.unary_unary_rpc_method_handler(
-                    servicer.Partition,
-                    request_deserializer=kmeans__pb2.returnMap.FromString,
                     response_serializer=kmeans__pb2.reply.SerializeToString,
+            ),
+            'Reduce': grpc.unary_unary_rpc_method_handler(
+                    servicer.Reduce,
+                    request_deserializer=kmeans__pb2.reduceInfo.FromString,
+                    response_serializer=kmeans__pb2.keyValDict.SerializeToString,
+            ),
+            'GetPartition': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPartition,
+                    request_deserializer=kmeans__pb2.reduceInfo.FromString,
+                    response_serializer=kmeans__pb2.keyValDict.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -77,12 +93,12 @@ class KMeans(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/KMeans/Map',
             kmeans__pb2.mapInfo.SerializeToString,
-            kmeans__pb2.returnMap.FromString,
+            kmeans__pb2.reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Partition(request,
+    def Reduce(request,
             target,
             options=(),
             channel_credentials=None,
@@ -92,8 +108,25 @@ class KMeans(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/KMeans/Partition',
-            kmeans__pb2.returnMap.SerializeToString,
-            kmeans__pb2.reply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/KMeans/Reduce',
+            kmeans__pb2.reduceInfo.SerializeToString,
+            kmeans__pb2.keyValDict.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetPartition(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/KMeans/GetPartition',
+            kmeans__pb2.reduceInfo.SerializeToString,
+            kmeans__pb2.keyValDict.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
