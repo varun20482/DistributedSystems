@@ -6,6 +6,7 @@ import random
 import subprocess
 import sys
 import uuid
+import concurrent.futures
 
 def read_entries(filename):
     try:
@@ -50,29 +51,111 @@ def read_file_in_chunks(file_name, num_chunks, index):
 
     return kmeans_pb2.chunk(start_index = start_index, end_index = end_index)
 
+failed_mappers = []
+mapper_stubs = []
+reducer_stubs = []
+mapper_chunks = []
+master_id = ""
+
+failed_reducers = []
+updated_centroids = []
+
+def map_chunk(i, centroids, itr):
+    print(f"===================MAPPER_{i + 1}==================")
+    try:
+        
+        response = mapper_stubs[i].Map(kmeans_pb2.mapInfo(indices=mapper_chunks[i], centroids=centroids, master_id=master_id, iteration=itr))
+        if response.success:
+            print(f"MAP OPERATION SUCCESSFUL: CHUNK {i + 1}")
+        else:
+            print(f"MAP OPERATION FAILED: RETURNED FAILED: CHUNK {i + 1}")
+            failed_mappers.append(i)
+    except grpc.RpcError as e:
+        print(f"MAP OPERATION FAILED: RPC ERROR: CHUNK {i + 1}")
+        failed_mappers.append(i)
+    print("=============================================")
+
+def retry_map_chunk(idx, centroids, itr):
+    print(f"RETRYING FAILED MAP: CHUNK ID: {idx + 1}")
+    idx_success = False
+    while(not idx_success):
+        for i in range(0, common.MAPPERS):
+            try:
+                response = mapper_stubs[i].Map(kmeans_pb2.mapInfo(indices=mapper_chunks[idx], centroids=centroids, master_id=master_id, iteration=itr))
+                if response.success:
+                    idx_success = True
+                    print(f"MAP OPERATION SUCCESSFUL: CHUNK {idx + 1}: BY MAPPER {i + 1}")
+                    break
+                else:
+                    print(f"MAP OPERATION FAILED: RETURNED FAILED: CHUNK {idx + 1}")
+            except grpc.RpcError as e:
+                print(f"MAP OPERATION FAILED: RPC ERROR: CHUNK {idx + 1}")
+
+def reduce_operation(i, itr):
+    print(f"==================REDUCER_{i + 1}==================")
+    try:
+        response = reducer_stubs[i].Reduce(kmeans_pb2.reduceInfo(id=i, iteration=itr))
+        if response.success:
+            print(f"REDUCE OPERATION SUCCESSFUL: REDUCE ID {i + 1}: BY REDUCER {i + 1}")
+            print("UPDATED CENTROIDS BY REDUCER:")
+            for item in response.dict:
+                print(f"{item.key}:({item.value.x},{item.value.y})\n")
+            updated_centroids.append(response.dict)
+        else:
+            print(f"REDUCE OPERATION FAILED: REDUCE ID {i + 1}: BY REDUCER {i + 1}: RETURNED FAILED")
+            failed_reducers.append(i)
+    except grpc.RpcError as e:
+        print(f"REDUCE OPERATION FAILED: REDUCE ID {i + 1}: BY REDUCER {i + 1}: RPC ERROR")
+        failed_reducers.append(i)
+    print("=============================================")
+
+def retry_reduce_operation(idx, itr):
+    print(f"RETRYING FAILED REDUCE ID: {idx + 1}")
+    idx_success = False
+    while(not idx_success):
+        for i in range(0, common.REDUCERS):
+            try:
+                response = reducer_stubs[i].Reduce(kmeans_pb2.reduceInfo(id=idx, iteration=itr))
+                if response.success:
+                    print(f"REDUCE OPERATION SUCCESSFUL: REDUCE ID {idx + 1}: BY REDUCER {i + 1}")
+                    print("UPDATED CENTROIDS BY REDUCER:")
+                    for item in response.dict:
+                        print(f"{item.key}:({item.value.x},{item.value.y})\n")
+                    updated_centroids.append(response.dict)
+                    idx_success = True
+                    break
+                else:
+                    print(f"REDUCE OPERATION FAILED: REDUCE ID {idx + 1}: BY REDUCER {i + 1}: RETURNED FAILED")
+            except grpc.RpcError as e:
+                print(f"REDUCE OPERATION FAILED: REDUCE ID {idx + 1}: BY REDUCER {i + 1}: RPC ERROR")
+
 def run():
+    global master_id
     master_id = str(uuid.uuid1())
-    mapper_stubs = []
-    reducer_stubs = []
+
+    global mapper_stubs
     for i in range(0, common.MAPPERS):
         mapper_channel = grpc.insecure_channel(common.master_to_mapper_ports[i])
         mapper_stubs.append(kmeans_pb2_grpc.KMeansStub(mapper_channel))
 
+    global reducer_stubs
     for i in range(0, common.REDUCERS):
         reducer_channel = grpc.insecure_channel(common.master_to_reducer_ports[i])
         reducer_stubs.append(kmeans_pb2_grpc.KMeansStub(reducer_channel))
     
-    mapper_chunks = []
     for i in range(0, common.MAPPERS):
         mapper_chunks.append(read_file_in_chunks(common.input_path, common.MAPPERS, i))
 
     centroids = []
     print("============= INITIAL CENTROIDS =============")
+    centroids = read_entries(common.input_centroids_path)
+
+    #For RANDOM CENTROIDS UNCOMMENT AT EACH RUN
     # for i in range(0, common.CENTROIDS):
     #     x = random.uniform(common.coordinates_from, common.coordinates_to)
     #     y = random.uniform(common.coordinates_from, common.coordinates_to)
     #     centroids.append(kmeans_pb2.coordinate(x=x, y=y))
-    centroids = read_entries(common.input_centroids_path)
+
     for i, item in enumerate(centroids):
             print(f"({item.x:.2f},{item.y:.2f})", end="")
             if i < len(centroids) - 1:
@@ -81,88 +164,28 @@ def run():
                 print()
     print("=============================================")
 
-    failed_mappers = []
     for itr in range(common.ITERATIONS):
         print(f"=================ITERATION:{itr + 1}=================")
 
-        for i in range(0, common.MAPPERS):
-            print(f"===================MAPPER_{i + 1}==================")
-            try:
-                response = mapper_stubs[i].Map(kmeans_pb2.mapInfo(indices=mapper_chunks[i], centroids=centroids, master_id=master_id, iteration=itr))
-                if(response.success):
-                    print(f"MAP OPERATION SUCCESSFUL: CHUNK {i + 1}")
-                else:
-                    print(f"MAP OPERATION FAILED: RETURNED FAILED: CHUNK {i + 1}")
-                    failed_mappers.append(i)
-            except grpc.RpcError as e:
-                    print(f"MAP OPERATION FAILED: RPC ERROR: CHUNK {i + 1}")
-                    failed_mappers.append(i)
-            print("=============================================")
+        with concurrent.futures.ThreadPoolExecutor(max_workers=common.MAPPERS) as executor:
+            futures = [executor.submit(map_chunk, i, centroids, itr) for i in range(common.MAPPERS)]
+            concurrent.futures.wait(futures)
         
-        while(len(failed_mappers) != 0):
-            idx = failed_mappers[0]
-            print(f"RETRYING FAILED MAP: CHUNK ID: {idx + 1}")
-            failed_mappers.pop(0)
-            idx_success = False
-            for i in range(0, common.MAPPERS):
-                try:
-                    response = mapper_stubs[i].Map(kmeans_pb2.mapInfo(indices=mapper_chunks[idx], centroids=centroids, master_id=master_id, iteration=itr))
-                    if(response.success):
-                        idx_success = True
-                        print(f"MAP OPERATION SUCCESSFUL: CHUNK {idx + 1}: BY MAPPER {i + 1}")
-                        break
-                    else:
-                        print(f"MAP OPERATION FAILED: RETURNED FAILED: CHUNK {idx + 1}")
-                except grpc.RpcError as e:
-                        print(f"MAP OPERATION FAILED: RPC ERROR: CHUNK {idx + 1}")
+        global failed_mappers
+        with concurrent.futures.ThreadPoolExecutor(max_workers=common.MAPPERS) as executor:
+            futures = [executor.submit(retry_map_chunk, idx, centroids, itr) for idx in failed_mappers]
+            concurrent.futures.wait(futures)
+        failed_mappers = []
 
-            if(not idx_success):
-                failed_mappers.append(idx)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=common.REDUCERS) as executor:
+            futures = [executor.submit(reduce_operation, i, itr) for i in range(common.REDUCERS)]
+            concurrent.futures.wait(futures)
 
-        updated_centroids = []
+        global failed_reducers
+        with concurrent.futures.ThreadPoolExecutor(max_workers=common.REDUCERS) as executor:
+            futures = [executor.submit(retry_reduce_operation, idx, itr) for idx in failed_reducers]
+            concurrent.futures.wait(futures)
         failed_reducers = []
-        for i in range(0, common.REDUCERS):
-            print(f"==================REDUCER_{i + 1}==================")
-            try:
-                response = reducer_stubs[i].Reduce(kmeans_pb2.reduceInfo(id = i, iteration=itr))
-                if(response.success == True):
-                    print(f"REDUCE OPERATION SUCCESSFUL: REDUCE ID {i + 1}: BY REDUCER {i + 1}")
-                    print("UPDATED CENTROIDS BY REDUCER:")
-                    for item in response.dict:
-                        print(f"{item.key}:({item.value.x},{item.value.y})\n")
-                    updated_centroids.append(response.dict)
-                else:
-                    print(f"REDUCE OPERATION FAILED: REDUCE ID {i + 1}: BY REDUCER {i + 1}: RETURNED FAILED")
-                    failed_reducers.append(i)
-            except grpc.RpcError as e:
-                print(f"REDUCE OPERATION FAILED: REDUCE ID {i + 1}: BY REDUCER {i + 1}: RPC ERROR")
-                failed_reducers.append(i)
-            print("=============================================")
-
-        while(len(failed_reducers) != 0):
-            idx = failed_reducers[0]
-            print(f"RETRYING FAILED REDUCE ID: {idx + 1}")
-            failed_reducers.pop(0)
-            idx_success = False
-            for i in range(0, common.REDUCERS):
-                try:
-                    response = reducer_stubs[i].Reduce(kmeans_pb2.reduceInfo(id = idx, iteration=itr))
-                    if(response.success == True):
-                        print(f"REDUCE OPERATION SUCCESSFUL: REDUCE ID {idx + 1}: BY REDUCER {i + 1}")
-                        print("UPDATED CENTROIDS BY REDUCER:")
-                        for item in response.dict:
-                            print(f"{item.key}:({item.value.x},{item.value.y})\n")
-                        updated_centroids.append(response.dict)
-                        idx_success = True
-                        break
-                    else:
-                        print(f"REDUCE OPERATION FAILED: REDUCE ID {idx + 1}: BY REDUCER {i + 1}: RETURNED FAILED")
-                except grpc.RpcError as e:
-                        print(f"REDUCE OPERATION FAILED: REDUCE ID {idx + 1}: BY REDUCER {i + 1}: RPC ERROR")
-                        print(e)
-
-            if(not idx_success):
-                failed_reducers.append(idx)
 
         prev_centroids = []
         for i in range(0, len(centroids)):

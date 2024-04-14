@@ -47,7 +47,7 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
     def Map(self, request, context):
         print(f"==== MAP ID: {self.id + 1} REQUEST FROM MASTER ====")
         print(f"ITERATION:{request.iteration + 1}")
-        print("MASTER ABC", self.master_id, request.master_id)
+        print(f"CURRENT MASTER: {self.master_id}, REQUEST MASTER: {request.master_id}")
         if(self.master_id != request.master_id or self.iteration != request.iteration):
             print("NEW ITERATION OR NEW MASTER, RESET PARTITION FILES")
             for i in range(0, common.REDUCERS):
