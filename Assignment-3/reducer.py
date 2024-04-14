@@ -9,6 +9,7 @@ import os
 class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
     def __init__(self):
         self.id = int(sys.argv[1])
+        self.iteration = 0
         self.mapper_stubs = []
         for i in range(0, common.MAPPERS):
             mapper_channel = grpc.insecure_channel(common.master_to_mapper_ports[i])
@@ -25,16 +26,25 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
         return data
     
     def Reduce(self, request, context):
-        print(f"=== REDUCE ID: {self.id} REQUEST FROM MASTER ===")
-        filename = f"reducers/R{request.id}.txt"
+        print(f"=== REDUCE ID: {self.id + 1} REQUEST FROM MASTER ===")
+        print(f"ITERATION:{request.iteration + 1}")
+        print(f"REDUCING THE PARTITION:", request.id + 1)
+        if(common.faulty_reducers and self.id != 0 and common.randomly_true()):
+            print("FAULTY REDUCER")
+            print("========================================")
+            return kmeans_pb2.keyValDict(success=False)
+        filename = f"data/reducers/R{self.id + 1}.txt"
         assigned_tasks = []
         for i in range(0, common.MAPPERS):
-            response = self.mapper_stubs[i].GetPartition(kmeans_pb2.reduceInfo(id = request.id))
-            assigned_tasks.append(response.dict)
-            print(f"ASSIGNED TASKS FROM MAPPER ID: {i + 1}")
-            for item in response.dict:
-                print(f"{item.key}:({item.value.x},{item.value.y})\n")
-            print()
+            try:
+                response = self.mapper_stubs[i].GetPartition(kmeans_pb2.reduceInfo(id = request.id))
+                assigned_tasks.append(response.dict)
+                print(f"ASSIGNED TASKS FROM MAPPER ID: {i + 1}")
+                for item in response.dict:
+                    print(f"{item.key}:({item.value.x},{item.value.y})\n")
+                print()
+            except grpc.RpcError as e:
+                print(f"GET PARTITION FAILED FOR MAPPER ID: {i + 1}")
 
         print("=========== SHUFFLE AND SORT ===========")
         data = self.ShuffleSort(assigned_tasks)
@@ -68,16 +78,17 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                 print()
 
         with open(filename, 'a') as file:
-                file.write("=================OUTPUT=================\n")
+                file.write(f"==========OUTPUT PARTITION:{request.id + 1}===========\n")
+                file.write(f"ITERATION:{request.iteration}\n")
                 for i, item in enumerate(centroids):
                     file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
                 file.write("========================================\n")
         
         print("========================================")
-        return kmeans_pb2.keyValDict(dict = centroids)
+        return kmeans_pb2.keyValDict(dict = centroids, success = True)
 
 def serve():
-    filename = f"reducers/R{int(sys.argv[1])}.txt"
+    filename = f"data/reducers/R{int(sys.argv[1]) + 1}.txt"
     with open(filename, 'w') as file:
         file.write("")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -94,7 +105,7 @@ def serve():
 
 if __name__ == '__main__':
     original_stdout = sys.stdout
-    with open(f"dump/reducer_{int(sys.argv[1])}.txt", 'w') as f:
+    with open(f"data/dump/reducer_{int(sys.argv[1]) + 1}.txt", 'w') as f:
         sys.stdout = f
         serve()
         sys.stdout = original_stdout

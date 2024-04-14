@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ckmeans.proto\"\"\n\ncoordinate\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\"/\n\x05\x63hunk\x12\x13\n\x0bstart_index\x18\x01 \x01(\x05\x12\x11\n\tend_index\x18\x02 \x01(\x05\"B\n\x07mapInfo\x12\x17\n\x07indices\x18\x01 \x01(\x0b\x32\x06.chunk\x12\x1e\n\tcentroids\x18\x02 \x03(\x0b\x32\x0b.coordinate\"1\n\x06keyVal\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1a\n\x05value\x18\x02 \x01(\x0b\x32\x0b.coordinate\"#\n\nkeyValDict\x12\x15\n\x04\x64ict\x18\x01 \x03(\x0b\x32\x07.keyVal\"\x18\n\nreduceInfo\x12\n\n\x02id\x18\x01 \x01(\x05\"\x18\n\x05reply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32u\n\x06KMeans\x12\x19\n\x03Map\x12\x08.mapInfo\x1a\x06.reply\"\x00\x12$\n\x06Reduce\x12\x0b.reduceInfo\x1a\x0b.keyValDict\"\x00\x12*\n\x0cGetPartition\x12\x0b.reduceInfo\x1a\x0b.keyValDict\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ckmeans.proto\"\"\n\ncoordinate\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\"/\n\x05\x63hunk\x12\x13\n\x0bstart_index\x18\x01 \x01(\x05\x12\x11\n\tend_index\x18\x02 \x01(\x05\"h\n\x07mapInfo\x12\x17\n\x07indices\x18\x01 \x01(\x0b\x32\x06.chunk\x12\x1e\n\tcentroids\x18\x02 \x03(\x0b\x32\x0b.coordinate\x12\x11\n\tmaster_id\x18\x03 \x01(\t\x12\x11\n\titeration\x18\x04 \x01(\x05\"1\n\x06keyVal\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1a\n\x05value\x18\x02 \x01(\x0b\x32\x0b.coordinate\"4\n\nkeyValDict\x12\x15\n\x04\x64ict\x18\x01 \x03(\x0b\x32\x07.keyVal\x12\x0f\n\x07success\x18\x02 \x01(\x08\">\n\nreduceInfo\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x11\n\tmaster_id\x18\x02 \x01(\t\x12\x11\n\titeration\x18\x03 \x01(\x05\"\x18\n\x05reply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32u\n\x06KMeans\x12\x19\n\x03Map\x12\x08.mapInfo\x1a\x06.reply\"\x00\x12$\n\x06Reduce\x12\x0b.reduceInfo\x1a\x0b.keyValDict\"\x00\x12*\n\x0cGetPartition\x12\x0b.reduceInfo\x1a\x0b.keyValDict\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -26,15 +26,15 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_CHUNK']._serialized_start=52
   _globals['_CHUNK']._serialized_end=99
   _globals['_MAPINFO']._serialized_start=101
-  _globals['_MAPINFO']._serialized_end=167
-  _globals['_KEYVAL']._serialized_start=169
-  _globals['_KEYVAL']._serialized_end=218
-  _globals['_KEYVALDICT']._serialized_start=220
-  _globals['_KEYVALDICT']._serialized_end=255
-  _globals['_REDUCEINFO']._serialized_start=257
-  _globals['_REDUCEINFO']._serialized_end=281
-  _globals['_REPLY']._serialized_start=283
-  _globals['_REPLY']._serialized_end=307
-  _globals['_KMEANS']._serialized_start=309
-  _globals['_KMEANS']._serialized_end=426
+  _globals['_MAPINFO']._serialized_end=205
+  _globals['_KEYVAL']._serialized_start=207
+  _globals['_KEYVAL']._serialized_end=256
+  _globals['_KEYVALDICT']._serialized_start=258
+  _globals['_KEYVALDICT']._serialized_end=310
+  _globals['_REDUCEINFO']._serialized_start=312
+  _globals['_REDUCEINFO']._serialized_end=374
+  _globals['_REPLY']._serialized_start=376
+  _globals['_REPLY']._serialized_end=400
+  _globals['_KMEANS']._serialized_start=402
+  _globals['_KMEANS']._serialized_end=519
 # @@protoc_insertion_point(module_scope)

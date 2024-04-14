@@ -13,6 +13,8 @@ message chunk {
 message mapInfo {
   chunk indices = 1;
   repeated coordinate centroids = 2;
+  string master_id = 3;
+  int32 iteration = 4;
 }
 
 message keyVal {
@@ -22,10 +24,13 @@ message keyVal {
 
 message keyValDict {
   repeated keyVal dict = 1;
+  bool success = 2;
 }
 
 message reduceInfo {
   int32 id = 1;
+  string master_id = 2;
+  int32 iteration = 3;
 }
 
 message reply {
