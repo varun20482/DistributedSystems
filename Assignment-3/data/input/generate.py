@@ -13,14 +13,14 @@ def generate_coordinates(num_points, min_val, max_val):
         for _ in range(num_points):
             x = random.uniform(min_val, max_val)
             y = random.uniform(min_val, max_val)
-            f.write(f"({x:.2f},{y:.2f})\n")
+            f.write(f"{x} {y}\n")
 
 def generate_centroids(num_points, min_val, max_val):
     with open("centroids.txt", "w") as f:
         for _ in range(num_points):
             x = random.uniform(min_val, max_val)
             y = random.uniform(min_val, max_val)
-            f.write(f"({x:.2f},{y:.2f})\n")
+            f.write(f"{x}, {y}\n")
 
 generate_coordinates(common.num_data_points, common.coordinates_from, common.coordinates_to)
 generate_centroids(common.CENTROIDS, common.coordinates_from, common.coordinates_to)

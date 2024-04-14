@@ -15,10 +15,9 @@ def read_entries(filename):
     try:
         with open(filename, 'r') as file:
             lines = file.readlines()
-
             coordinates = []
             for line in lines:
-                x, y = map(float, line.strip()[1:-1].split(','))
+                x, y = map(float, line.strip().split(', '))
                 coordinates.append(kmeans_pb2.coordinate(x = x, y = y))
             
             return coordinates
