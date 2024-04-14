@@ -43,6 +43,7 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
         self.id = int(sys.argv[1])
 
     def Map(self, request, context):
+        print(f"==== MAP ID: {self.id} REQUEST FROM MASTER ====")
         for i in range(0, common.REDUCERS):
             filename = f"mappers/M{int(sys.argv[1]) + 1}/partition_{i + 1}.txt"
             with open(filename, 'w') as file:
@@ -50,7 +51,27 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
         start_index = request.indices.start_index
         end_index = request.indices.end_index
         data_points = read_entries(common.input_path, start_index, end_index)
+
+        print("=========== ASSIGNED POINTS ============")
+        for i, item in enumerate(data_points):
+            print(f"({item.x:.2f},{item.y:.2f})", end="")
+            if i < len(data_points) - 1:
+                print(", ", end="")
+            else:
+                print()
+        print("========================================")
+
         centroids = request.centroids
+
+        print("========== ASSIGNED CENTROIDS ==========")
+        for i, item in enumerate(centroids):
+            print(f"({item.x:.2f},{item.y:.2f})", end="")
+            if i < len(centroids) - 1:
+                print(", ", end="")
+            else:
+                print()
+        print("========================================")
+
         dict = []
         for point in data_points:
             nearest_centroid = -1
@@ -63,27 +84,38 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                     current_distance = temp
             dict.append(kmeans_pb2.keyVal(key = nearest_centroid, value = point))
 
-        print(f"=====MAPPING_{self.id}=====")
-        print(dict)
-        print("===================")  
+        print("============= MAPPED RESULT ============")
+        for i, item in enumerate(dict):
+                    print(f"{item.key}:({item.value.x},{item.value.y})\n")
+                    if i < len(dict) - 1:
+                        print(", ", end="")
+                    else:
+                        print()
+        print("========================================")
 
         response = self.Partition(kmeans_pb2.keyValDict(dict = dict))
-        print(f"====PARTITION_{self.id}=====")
-        print(response)
-        print("===================")  
+        print("========================================")
         return kmeans_pb2.reply(success=True)
 
     def Partition(self, request):
+        print(f"== PARTITION ID:{self.id} REQUEST FROM MAPPER ==")
         dict = sorted(request.dict, key=get_coordinates)
-        print(dict)
         for item in dict:
             reducer_id = item.key % common.REDUCERS
+
+            print(f"REDUCER ID: {reducer_id} ASSIGNED:")
+            print(f"{item.key}:({item.value.x},{item.value.y})\n")
+
             filename = f"mappers/M{int(sys.argv[1]) + 1}/partition_{reducer_id + 1}.txt"
             with open(filename, 'a') as file:
                 file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
+        print("========================================")
         return kmeans_pb2.reply(success=True)
     
     def GetPartition(self, request, context):
+        print("=========GET PARTITION REQUEST==========")
+        print(f"TO MAPPER ID:{self.id}")
+        print(f"FROM REDUCER ID:{request.id}")
         dict = []
         filename = f"mappers/M{self.id+1}/partition_{request.id + 1}.txt"
         with open(filename, 'r') as file:
@@ -98,6 +130,10 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                         y = float(y)
                         point = kmeans_pb2.coordinate(x=x, y=y)
                         dict.append(kmeans_pb2.keyVal(key = key, value = point))
+        print("RETURNED PARTITION")
+        for item in dict:
+            print(f"{item.key}:({item.value.x},{item.value.y})\n")
+        print("========================================")
         return kmeans_pb2.keyValDict(dict = dict)
 
 def serve():
@@ -117,4 +153,8 @@ def serve():
         server.stop(None)
 
 if __name__ == '__main__':
-    serve()
+    original_stdout = sys.stdout
+    with open(f"dump/mapper_{int(sys.argv[1])}.txt", 'w') as f:
+        sys.stdout = f
+        serve()
+        sys.stdout = original_stdout

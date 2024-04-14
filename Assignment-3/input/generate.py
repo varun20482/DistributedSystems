@@ -14,4 +14,4 @@ def generate_coordinates(num_points, min_val, max_val):
             y = random.uniform(min_val, max_val)
             f.write(f"({x:.2f},{y:.2f})\n")
 
-generate_coordinates(10, common.coordinates_from, common.coordinates_to)
+generate_coordinates(50, common.coordinates_from, common.coordinates_to)

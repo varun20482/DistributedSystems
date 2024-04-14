@@ -25,11 +25,29 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
         return data
     
     def Reduce(self, request, context):
+        print(f"=== REDUCE ID: {self.id} REQUEST FROM MASTER ===")
+        filename = f"reducers/R{request.id}.txt"
         assigned_tasks = []
         for i in range(0, common.MAPPERS):
             response = self.mapper_stubs[i].GetPartition(kmeans_pb2.reduceInfo(id = request.id))
             assigned_tasks.append(response.dict)
+            print(f"ASSIGNED TASKS FROM MAPPER ID: {i + 1}")
+            for item in response.dict:
+                print(f"{item.key}:({item.value.x},{item.value.y})\n")
+            print()
+
+        print("=========== SHUFFLE AND SORT ===========")
         data = self.ShuffleSort(assigned_tasks)
+        for key in data:
+            print(f"Key: {key} - ", end = "")
+            for i, item in enumerate(data[key]):
+                print(f"({item.x:.2f},{item.y:.2f})", end="")
+                if i < len(data[key]) - 1:
+                    print(", ", end="")
+                else:
+                    print()
+        print("========================================")
+
         centroids = []
         for key in data:
             sum_x = 0
@@ -40,9 +58,28 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
             avg_x = sum_x / len(data[key])
             avg_y = sum_y / len(data[key])
             centroids.append(kmeans_pb2.keyVal(key = key, value = kmeans_pb2.coordinate(x = avg_x, y = avg_y)))
+            
+        print("UPDATED CENTROIDS")
+        for i, item in enumerate(centroids):
+            print(f"{item.key}:({item.value.x},{item.value.y})\n")
+            if i < len(centroids) - 1:
+                print(", ", end="")
+            else:
+                print()
+
+        with open(filename, 'a') as file:
+                file.write("=================OUTPUT=================\n")
+                for i, item in enumerate(centroids):
+                    file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
+                file.write("========================================\n")
+        
+        print("========================================")
         return kmeans_pb2.keyValDict(dict = centroids)
 
 def serve():
+    filename = f"reducers/R{int(sys.argv[1])}.txt"
+    with open(filename, 'w') as file:
+        file.write("")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     kmeans_pb2_grpc.add_KMeansServicer_to_server(KMeansServicer(), server)
     server.add_insecure_port(common.reducer_ports[int(sys.argv[1])])
@@ -56,4 +93,8 @@ def serve():
         server.stop(None)
 
 if __name__ == '__main__':
-    serve()
+    original_stdout = sys.stdout
+    with open(f"dump/reducer_{int(sys.argv[1])}.txt", 'w') as f:
+        sys.stdout = f
+        serve()
+        sys.stdout = original_stdout

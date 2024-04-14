@@ -1,6 +1,8 @@
 MAPPERS=2
 REDUCERS=2
-CENTROIDS=6
+CENTROIDS=10
+
+ITERATIONS=10
 
 coordinates_from=-10
 coordinates_to=10

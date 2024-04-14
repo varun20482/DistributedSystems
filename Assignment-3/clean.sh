@@ -1,2 +1,3 @@
-rm -R reducers/R*
+rm reducers/R*
 rm -R mappers/M*
+rm dump/*
