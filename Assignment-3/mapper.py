@@ -6,6 +6,9 @@ import kmeans_pb2_grpc
 import sys
 import math
 import os
+import threading
+
+lock = threading.Lock()
 
 def read_entries(filename, start_index, end_index):
     try:
@@ -54,8 +57,9 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                 filename = f"data/mappers/M{int(sys.argv[1]) + 1}/partition_{i + 1}.txt"
                 with open(filename, 'w') as file:
                     file.write("")
-            self.master_id = request.master_id
-            self.iteration = request.iteration
+            with lock:
+                self.master_id = request.master_id
+                self.iteration = request.iteration
         
         start_index = request.indices.start_index
         end_index = request.indices.end_index
@@ -117,8 +121,9 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
             print(f"{item.key}:({item.value.x},{item.value.y})\n")
 
             filename = f"data/mappers/M{int(sys.argv[1]) + 1}/partition_{reducer_id + 1}.txt"
-            with open(filename, 'a') as file:
-                file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
+            with lock:
+                with open(filename, 'a') as file:
+                    file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
         print("========================================")
         return kmeans_pb2.reply(success=True)
     

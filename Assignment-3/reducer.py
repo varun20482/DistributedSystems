@@ -5,6 +5,9 @@ import kmeans_pb2
 import kmeans_pb2_grpc
 import sys
 import os
+import threading
+
+lock = threading.Lock()
 
 class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
     def __init__(self):
@@ -76,13 +79,13 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                 print(", ", end="")
             else:
                 print()
-
-        with open(filename, 'a') as file:
-                file.write(f"==========OUTPUT PARTITION:{request.id + 1}===========\n")
-                file.write(f"ITERATION:{request.iteration}\n")
-                for i, item in enumerate(centroids):
-                    file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
-                file.write("========================================\n")
+        with lock:
+            with open(filename, 'a') as file:
+                    file.write(f"==========OUTPUT PARTITION:{request.id + 1}===========\n")
+                    file.write(f"ITERATION:{request.iteration}\n")
+                    for i, item in enumerate(centroids):
+                        file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
+                    file.write("========================================\n")
         
         print("========================================")
         return kmeans_pb2.keyValDict(dict = centroids, success = True)

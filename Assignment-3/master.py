@@ -7,6 +7,7 @@ import subprocess
 import sys
 import uuid
 import concurrent.futures
+import threading
 
 def read_entries(filename):
     try:
@@ -60,6 +61,8 @@ master_id = ""
 failed_reducers = []
 updated_centroids = []
 
+lock = threading.Lock()
+
 def map_chunk(i, centroids, itr):
     print(f"===================MAPPER_{i + 1}==================")
     try:
@@ -100,13 +103,16 @@ def reduce_operation(i, itr):
             print("UPDATED CENTROIDS BY REDUCER:")
             for item in response.dict:
                 print(f"{item.key}:({item.value.x},{item.value.y})\n")
-            updated_centroids.append(response.dict)
+            with lock:
+                updated_centroids.append(response.dict)
         else:
             print(f"REDUCE OPERATION FAILED: REDUCE ID {i + 1}: BY REDUCER {i + 1}: RETURNED FAILED")
-            failed_reducers.append(i)
+            with lock:
+                failed_reducers.append(i)
     except grpc.RpcError as e:
         print(f"REDUCE OPERATION FAILED: REDUCE ID {i + 1}: BY REDUCER {i + 1}: RPC ERROR")
-        failed_reducers.append(i)
+        with lock:
+            failed_reducers.append(i)
     print("=============================================")
 
 def retry_reduce_operation(idx, itr):
@@ -121,7 +127,8 @@ def retry_reduce_operation(idx, itr):
                     print("UPDATED CENTROIDS BY REDUCER:")
                     for item in response.dict:
                         print(f"{item.key}:({item.value.x},{item.value.y})\n")
-                    updated_centroids.append(response.dict)
+                    with lock:
+                        updated_centroids.append(response.dict)
                     idx_success = True
                     break
                 else:
