@@ -4,6 +4,7 @@ CENTROIDS=10
 
 ITERATIONS=10
 
+num_data_points=500
 coordinates_from=-10
 coordinates_to=10
 

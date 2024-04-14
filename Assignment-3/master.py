@@ -9,6 +9,8 @@ import uuid
 import concurrent.futures
 import threading
 
+DEBUGGING = 0
+
 def read_entries(filename):
     try:
         with open(filename, 'r') as file:
@@ -76,6 +78,8 @@ def map_chunk(i, centroids, itr):
     except grpc.RpcError as e:
         print(f"MAP OPERATION FAILED: RPC ERROR: CHUNK {i + 1}")
         failed_mappers.append(i)
+        if(DEBUGGING):
+            print(e)
     print("=============================================")
 
 def retry_map_chunk(idx, centroids, itr):
@@ -93,6 +97,8 @@ def retry_map_chunk(idx, centroids, itr):
                     print(f"MAP OPERATION FAILED: RETURNED FAILED: CHUNK {idx + 1}")
             except grpc.RpcError as e:
                 print(f"MAP OPERATION FAILED: RPC ERROR: CHUNK {idx + 1}")
+                if(DEBUGGING):
+                    print(e)
 
 def reduce_operation(i, itr):
     print(f"==================REDUCER_{i + 1}==================")
@@ -113,6 +119,8 @@ def reduce_operation(i, itr):
         print(f"REDUCE OPERATION FAILED: REDUCE ID {i + 1}: BY REDUCER {i + 1}: RPC ERROR")
         with lock:
             failed_reducers.append(i)
+        if(DEBUGGING):
+            print(e)
     print("=============================================")
 
 def retry_reduce_operation(idx, itr):
@@ -135,6 +143,8 @@ def retry_reduce_operation(idx, itr):
                     print(f"REDUCE OPERATION FAILED: REDUCE ID {idx + 1}: BY REDUCER {i + 1}: RETURNED FAILED")
             except grpc.RpcError as e:
                 print(f"REDUCE OPERATION FAILED: REDUCE ID {idx + 1}: BY REDUCER {i + 1}: RPC ERROR")
+                if(DEBUGGING):
+                    print(e)
 
 def run():
     global master_id
@@ -233,6 +243,9 @@ def run():
                 file.write(f"({item.x:.2f},{item.y:.2f})\n")
 
 if __name__ == '__main__':
+    if(len(sys.argv) >= 2):
+        DEBUGGING = int(sys.argv[1])
+
     original_stdout = sys.stdout
     with open("data/dump/master.txt", 'w') as f:
         sys.stdout = f
