@@ -1,12 +1,7 @@
 MAPPERS=3
 REDUCERS=3
-CENTROIDS=3
 
 ITERATIONS=10
-
-num_data_points=20
-coordinates_from=-10
-coordinates_to=10
 
 input_path = "data/input/points.txt"
 input_centroids_path = "data/input/centroids.txt"

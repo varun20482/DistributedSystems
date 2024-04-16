@@ -44,7 +44,7 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                 assigned_tasks.append(response.dict)
                 print(f"ASSIGNED TASKS FROM MAPPER ID: {i + 1}")
                 for item in response.dict:
-                    print(f"{item.key}:({item.value.x},{item.value.y})\n")
+                    print(f"{item.key}:({item.value.x},{item.value.y})")
                 print()
             except grpc.RpcError as e:
                 print(f"GET PARTITION FAILED FOR MAPPER ID: {i + 1}")
@@ -74,7 +74,7 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
             
         print("UPDATED CENTROIDS")
         for i, item in enumerate(centroids):
-            print(f"{item.key}:({item.value.x},{item.value.y})\n")
+            print(f"{item.key}:({item.value.x},{item.value.y})")
             if i < len(centroids) - 1:
                 print(", ", end="")
             else:
@@ -88,6 +88,7 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                     file.write("========================================\n")
         
         print("========================================")
+        sys.stdout.flush()
         return kmeans_pb2.keyValDict(dict = centroids, success = True)
 
 def serve():

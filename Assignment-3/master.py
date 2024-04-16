@@ -107,7 +107,7 @@ def reduce_operation(i, itr):
             print(f"REDUCE OPERATION SUCCESSFUL: REDUCE ID {i + 1}: BY REDUCER {i + 1}")
             print("UPDATED CENTROIDS BY REDUCER:")
             for item in response.dict:
-                print(f"{item.key}:({item.value.x},{item.value.y})\n")
+                print(f"{item.key}:({item.value.x},{item.value.y})")
             with lock:
                 updated_centroids.append(response.dict)
         else:
@@ -133,7 +133,7 @@ def retry_reduce_operation(idx, itr):
                     print(f"REDUCE OPERATION SUCCESSFUL: REDUCE ID {idx + 1}: BY REDUCER {i + 1}")
                     print("UPDATED CENTROIDS BY REDUCER:")
                     for item in response.dict:
-                        print(f"{item.key}:({item.value.x},{item.value.y})\n")
+                        print(f"{item.key}:({item.value.x},{item.value.y})")
                     with lock:
                         updated_centroids.append(response.dict)
                     idx_success = True
@@ -166,14 +166,8 @@ def run():
     print("============= INITIAL CENTROIDS =============")
     centroids = read_entries(common.input_centroids_path)
 
-    #For RANDOM CENTROIDS UNCOMMENT AT EACH RUN
-    # for i in range(0, common.CENTROIDS):
-    #     x = random.uniform(common.coordinates_from, common.coordinates_to)
-    #     y = random.uniform(common.coordinates_from, common.coordinates_to)
-    #     centroids.append(kmeans_pb2.coordinate(x=x, y=y))
-
     for i, item in enumerate(centroids):
-            print(f"({item.x:.2f},{item.y:.2f})", end="")
+            print(f"({item.x},{item.y})", end="")
             if i < len(centroids) - 1:
                 print(", ", end="")
             else:
@@ -213,7 +207,7 @@ def run():
         
         print("============= UPDATED CENTROIDS =============")
         for i, item in enumerate(centroids):
-            print(f"({item.x:.2f},{item.y:.2f})", end="")
+            print(f"({item.x},{item.y})", end="")
             if i < len(centroids) - 1:
                 print(", ", end="")
             else:
@@ -232,14 +226,15 @@ def run():
             print(f"================NOT CONVERGED================")
 
         print("=============================================")
+        sys.stdout.flush()
 
     filename = "data/centroids.txt"
     with open(filename, 'w') as file:
         for i, item in enumerate(centroids):
             if( i != len(centroids) - 1):
-                file.write(f"({item.x:.2f},{item.y:.2f}), ")
+                file.write(f"({item.x},{item.y}), ")
             else:
-                file.write(f"({item.x:.2f},{item.y:.2f})\n")
+                file.write(f"({item.x},{item.y})\n")
 
 if __name__ == '__main__':
     if(len(sys.argv) >= 2):

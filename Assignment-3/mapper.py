@@ -104,11 +104,12 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
 
         print("============= MAPPED RESULT ============")
         for i, item in enumerate(dict):
-                    print(f"{item.key}:({item.value.x},{item.value.y})\n")
+                    print(f"{item.key}:({item.value.x},{item.value.y})")
         print("========================================")
 
         response = self.Partition(kmeans_pb2.keyValDict(dict = dict))
         print("========================================")
+        sys.stdout.flush()
         return kmeans_pb2.reply(success=True)
 
     def Partition(self, request):
@@ -125,6 +126,7 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                 with open(filename, 'a') as file:
                     file.write(f"{item.key}:({item.value.x},{item.value.y})\n")
         print("========================================")
+        sys.stdout.flush()
         return kmeans_pb2.reply(success=True)
     
     def GetPartition(self, request, context):
@@ -148,8 +150,9 @@ class KMeansServicer(kmeans_pb2_grpc.KMeansServicer):
                             dict.append(kmeans_pb2.keyVal(key = key, value = point))
         print("RETURNED PARTITION")
         for item in dict:
-            print(f"{item.key}:({item.value.x},{item.value.y})\n")
+            print(f"{item.key}:({item.value.x},{item.value.y})")
         print("========================================")
+        sys.stdout.flush()
         return kmeans_pb2.keyValDict(dict = dict)
 
 def serve():
